@@ -625,7 +625,7 @@ const ClubManagementPage = () => {
 
       {activeTab === 'schedule' && (
         <div className="card">
-          <h2 className="text-xl font-semibold mb-4">Основное расписание работы</h2>
+          <h2 className="text-xl font-semibold mb-4">Основной график работы</h2>
           <div className="space-y-3">
             {clubInfo?.workSchedules.map((schedule) => (
               <div key={schedule.id} className="flex justify-between items-center p-3 border rounded">
