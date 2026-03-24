@@ -160,7 +160,7 @@ const ClubDetailsPage = () => {
 
         {club.workSchedules.length > 0 && (
           <div className="mb-6">
-            <h2 className="text-xl font-bold mb-4">Расписание работы</h2>
+            <h2 className="text-xl font-bold mb-4">График работы</h2>
             <div className="space-y-2">
               {club.workSchedules.map((schedule) => (
                 <div key={schedule.id} className="flex justify-between items-center">
