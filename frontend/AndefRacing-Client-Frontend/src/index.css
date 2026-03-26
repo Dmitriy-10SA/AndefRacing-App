@@ -18,7 +18,7 @@
   }
 
   .btn-secondary {
-    @apply btn bg-gray-200 text-gray-900 hover:bg-gray-300 active:bg-gray-400;
+    @apply btn bg-gray-200 text-gray-700 border-2 border-gray-300 hover:bg-gray-300 hover:border-gray-400 active:bg-gray-400;
   }
 
   .btn-danger {
