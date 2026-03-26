@@ -31,8 +31,8 @@ const addDaysToDate = (dateStr: string, days: number): string => {
 
 const BookingsPage = () => {
   const currentDate = getCurrentDate()
-  const [startDate, setStartDate] = useState(addDaysToDate(currentDate, -30))
-  const [endDate, setEndDate] = useState(addDaysToDate(currentDate, 30))
+  const [startDate, setStartDate] = useState(currentDate)
+  const [endDate, setEndDate] = useState(addDaysToDate(currentDate, 7))
   const [currentPage, setCurrentPage] = useState(0)
   const pageSize = 5
 
