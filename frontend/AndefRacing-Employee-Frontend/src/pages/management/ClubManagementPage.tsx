@@ -77,11 +77,13 @@ const ClubManagementPage = () => {
   // Work Schedule Exceptions - date range
   const [exceptionsStartDate, setExceptionsStartDate] = useState(() => {
     const today = new Date()
-    return format(new Date(today.getFullYear(), today.getMonth(), 1), 'yyyy-MM-dd')
+    return format(today, 'yyyy-MM-dd')
   })
   const [exceptionsEndDate, setExceptionsEndDate] = useState(() => {
     const today = new Date()
-    return format(new Date(today.getFullYear(), today.getMonth() + 3, 0), 'yyyy-MM-dd')
+    const endDate = new Date(today)
+    endDate.setDate(today.getDate() + 7)
+    return format(endDate, 'yyyy-MM-dd')
   })
 
   const { data: workScheduleExceptions, refetch: refetchExceptions } = useQuery({

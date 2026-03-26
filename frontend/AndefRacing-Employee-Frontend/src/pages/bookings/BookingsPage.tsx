@@ -10,18 +10,18 @@ import PhoneInput from '@/components/PhoneInput'
 import { formatDateTime } from '@/utils/formatters'
 import { validatePhone } from '@/utils/validators'
 import { BookingStatus } from '@/types'
-import { format, subDays } from 'date-fns'
+import { format } from 'date-fns'
 
 const BookingsPage = () => {
   const navigate = useNavigate()
   const { currentClub } = useAuthStore()
-  const [startDate, setStartDate] = useState(format(subDays(new Date(), 7), 'yyyy-MM-dd'))
+  const [startDate, setStartDate] = useState(format(new Date(), 'yyyy-MM-dd'))
   const [endDate, setEndDate] = useState(format(new Date(), 'yyyy-MM-dd'))
   const [clientPhone, setClientPhone] = useState('')
   const [pageNumber, setPageNumber] = useState(0)
   const [phoneError, setPhoneError] = useState('')
   const [searchParams, setSearchParams] = useState({
-    startDate: format(subDays(new Date(), 7), 'yyyy-MM-dd'),
+    startDate: format(new Date(), 'yyyy-MM-dd'),
     endDate: format(new Date(), 'yyyy-MM-dd'),
     clientPhone: '',
   })
