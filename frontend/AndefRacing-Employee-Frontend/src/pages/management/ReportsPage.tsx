@@ -4,12 +4,18 @@ import { reportsApi } from '@/api/reportsApi'
 import LoadingSpinner from '@/components/LoadingSpinner'
 import ErrorMessage from '@/components/ErrorMessage'
 import { formatPrice, formatDate } from '@/utils/formatters'
-import { format, subDays } from 'date-fns'
+import { format } from 'date-fns'
 
 const ReportsPage = () => {
   const [reportType, setReportType] = useState<'booking' | 'financial'>('booking')
-  const [startDate, setStartDate] = useState(format(subDays(new Date(), 30), 'yyyy-MM-dd'))
-  const [endDate, setEndDate] = useState(format(new Date(), 'yyyy-MM-dd'))
+  const [startDate, setStartDate] = useState(() => {
+    const today = new Date()
+    return format(new Date(today.getFullYear(), today.getMonth(), 1), 'yyyy-MM-dd')
+  })
+  const [endDate, setEndDate] = useState(() => {
+    const today = new Date()
+    return format(new Date(today.getFullYear(), today.getMonth() + 1, 0), 'yyyy-MM-dd')
+  })
   const [shouldFetch, setShouldFetch] = useState(false)
 
   const { data: bookingStats, isLoading: bookingLoading, error: bookingError } = useQuery({

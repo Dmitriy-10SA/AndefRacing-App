@@ -49,7 +49,7 @@ const ProfilePage = () => {
 
       <div className="space-y-6">
         <div className="card space-y-4">
-          <h2 className="text-xl font-semibold border-b pb-2">Личные данные</h2>
+          <h2 className="text-xl font-semibold section-divider">Личные данные</h2>
 
           <div>
             <label className="label">Фамилия</label>
@@ -89,7 +89,7 @@ const ProfilePage = () => {
         </div>
 
         <div className="card space-y-4">
-          <h2 className="text-xl font-semibold border-b pb-2">Текущий клуб</h2>
+          <h2 className="text-xl font-semibold section-divider">Текущий клуб</h2>
 
           {currentClub && (
             <>
