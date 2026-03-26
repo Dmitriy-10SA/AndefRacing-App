@@ -413,65 +413,71 @@ const ClubManagementPage = () => {
       <ToastContainer />
       <h1 className="text-3xl font-bold mb-6">Управление клубом</h1>
 
-      <div className="mb-6 border-b">
+      <div className="mb-6 border-b-2 border-gray-300">
         <div className="flex gap-4">
           <button
             onClick={() => setActiveTab('general')}
-            className={`pb-2 px-4 ${
+            className={`pb-3 px-4 transition-colors ${
               activeTab === 'general'
-                ? 'border-b-2 border-primary-600 text-primary-600 font-semibold'
-                : 'text-gray-600'
+                ? 'border-b-3 border-primary-600 text-primary-600 font-semibold'
+                : 'text-gray-600 hover:text-gray-900'
             }`}
+            style={activeTab === 'general' ? { borderBottomWidth: '3px' } : {}}
           >
             Общее
           </button>
           <button
             onClick={() => setActiveTab('prices')}
-            className={`pb-2 px-4 ${
+            className={`pb-3 px-4 transition-colors ${
               activeTab === 'prices'
-                ? 'border-b-2 border-primary-600 text-primary-600 font-semibold'
-                : 'text-gray-600'
+                ? 'border-b-3 border-primary-600 text-primary-600 font-semibold'
+                : 'text-gray-600 hover:text-gray-900'
             }`}
+            style={activeTab === 'prices' ? { borderBottomWidth: '3px' } : {}}
           >
             Цены
           </button>
           <button
             onClick={() => setActiveTab('games')}
-            className={`pb-2 px-4 ${
+            className={`pb-3 px-4 transition-colors ${
               activeTab === 'games'
-                ? 'border-b-2 border-primary-600 text-primary-600 font-semibold'
-                : 'text-gray-600'
+                ? 'border-b-3 border-primary-600 text-primary-600 font-semibold'
+                : 'text-gray-600 hover:text-gray-900'
             }`}
+            style={activeTab === 'games' ? { borderBottomWidth: '3px' } : {}}
           >
             Игры
           </button>
           <button
             onClick={() => setActiveTab('schedule')}
-            className={`pb-2 px-4 ${
+            className={`pb-3 px-4 transition-colors ${
               activeTab === 'schedule'
-                ? 'border-b-2 border-primary-600 text-primary-600 font-semibold'
-                : 'text-gray-600'
+                ? 'border-b-3 border-primary-600 text-primary-600 font-semibold'
+                : 'text-gray-600 hover:text-gray-900'
             }`}
+            style={activeTab === 'schedule' ? { borderBottomWidth: '3px' } : {}}
           >
             Расписание
           </button>
           <button
             onClick={() => setActiveTab('exceptions')}
-            className={`pb-2 px-4 ${
+            className={`pb-3 px-4 transition-colors ${
               activeTab === 'exceptions'
-                ? 'border-b-2 border-primary-600 text-primary-600 font-semibold'
-                : 'text-gray-600'
+                ? 'border-b-3 border-primary-600 text-primary-600 font-semibold'
+                : 'text-gray-600 hover:text-gray-900'
             }`}
+            style={activeTab === 'exceptions' ? { borderBottomWidth: '3px' } : {}}
           >
             Дни-исключения
           </button>
           <button
             onClick={() => setActiveTab('photos')}
-            className={`pb-2 px-4 ${
+            className={`pb-3 px-4 transition-colors ${
               activeTab === 'photos'
-                ? 'border-b-2 border-primary-600 text-primary-600 font-semibold'
-                : 'text-gray-600'
+                ? 'border-b-3 border-primary-600 text-primary-600 font-semibold'
+                : 'text-gray-600 hover:text-gray-900'
             }`}
+            style={activeTab === 'photos' ? { borderBottomWidth: '3px' } : {}}
           >
             Фотографии
           </button>
