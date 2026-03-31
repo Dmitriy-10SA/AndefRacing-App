@@ -88,9 +88,9 @@ const BookingDetailsPage = () => {
       </button>
 
       <div className="card">
-        <div className="flex justify-between items-start mb-6">
-          <h1 className="text-3xl font-bold">Детали бронирования</h1>
-          <span className={`px-3 py-1 rounded-full text-sm font-semibold ${getStatusColor(booking.status)}`}>
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3 mb-6">
+          <h1 className="text-2xl sm:text-3xl font-bold">Детали бронирования</h1>
+          <span className={`px-3 py-1 rounded-full text-sm font-semibold self-start ${getStatusColor(booking.status)}`}>
             {getStatusText(booking.status)}
           </span>
         </div>

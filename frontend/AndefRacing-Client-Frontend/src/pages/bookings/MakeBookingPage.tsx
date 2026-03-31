@@ -147,7 +147,7 @@ const MakeBookingPage = () => {
         ← Назад
       </button>
 
-      <h1 className="text-3xl font-bold mb-6">Бронирование: {club?.name}</h1>
+      <h1 className="text-2xl sm:text-3xl font-bold mb-6">Бронирование: {club?.name}</h1>
 
       {errorMessage && (
         <div className="mb-6">
@@ -157,9 +157,9 @@ const MakeBookingPage = () => {
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <div className="card">
-          <h2 className="text-xl font-bold mb-4">Параметры бронирования</h2>
+          <h2 className="text-lg sm:text-xl font-bold mb-4">Параметры бронирования</h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
             <div>
               <label className="label">Дата</label>
               <input
@@ -230,10 +230,10 @@ const MakeBookingPage = () => {
           </div>
 
           {price !== null && (
-            <div className="bg-primary-50 border border-primary-200 text-primary-800 px-4 py-3 rounded-lg mb-4">
-              <p className="font-semibold">
+            <div className="bg-primary-50 border border-primary-200 text-primary-800 px-3 sm:px-4 py-3 rounded-lg mb-4">
+              <p className="font-semibold text-sm sm:text-base">
                 Стоимость: {price * Number(cntEquipment)} ₽
-                <span className="text-sm font-normal ml-2">
+                <span className="text-xs sm:text-sm font-normal ml-2 block sm:inline mt-1 sm:mt-0">
                   ({price} ₽ × {cntEquipment} {Number(cntEquipment) === 1 ? 'игровое место' : Number(cntEquipment) < 5 ? 'игровых места' : 'игровых мест'})
                 </span>
               </p>
@@ -252,12 +252,12 @@ const MakeBookingPage = () => {
 
         {shouldFetchSlots && (
           <div className="card">
-            <h2 className="text-xl font-bold mb-4">Выберите время</h2>
+            <h2 className="text-lg sm:text-xl font-bold mb-4">Выберите время</h2>
 
             {slotsLoading && <LoadingSpinner />}
 
             {!slotsLoading && slots && slots.length > 0 && (
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2 sm:gap-3">
                 {slots.map((slot, index) => {
                   // Извлекаем время из строки
                   const timeMatch = slot.startDateTime.match(/T(\d{2}:\d{2})/)
@@ -267,7 +267,7 @@ const MakeBookingPage = () => {
                       key={index}
                       type="button"
                       onClick={() => setSelectedSlot(slot)}
-                      className={`p-3 rounded-lg border-2 transition-colors ${
+                      className={`p-2 sm:p-3 rounded-lg border-2 transition-colors text-sm sm:text-base ${
                         selectedSlot === slot
                           ? 'border-primary-600 bg-primary-50'
                           : 'border-gray-300 hover:border-primary-400'
@@ -287,27 +287,27 @@ const MakeBookingPage = () => {
         )}
 
         <div className="card">
-          <h2 className="text-xl font-bold mb-4">Пожелания (необязательно)</h2>
+          <h2 className="text-lg sm:text-xl font-bold mb-4">Пожелания (необязательно)</h2>
           <textarea
             className="input"
-            rows={4}
+            rows={3}
             placeholder="Укажите ваши пожелания к бронированию..."
             {...register('note')}
           />
         </div>
 
-        <div className="flex gap-4">
+        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
           <button
             type="submit"
             disabled={!selectedSlot || bookingMutation.isPending}
-            className="btn-primary"
+            className="btn-primary order-1 sm:order-none"
           >
             {bookingMutation.isPending ? 'Бронирование...' : 'Забронировать'}
           </button>
           <button
             type="button"
             onClick={() => navigate(-1)}
-            className="btn-secondary"
+            className="btn-secondary order-2 sm:order-none"
           >
             Отмена
           </button>

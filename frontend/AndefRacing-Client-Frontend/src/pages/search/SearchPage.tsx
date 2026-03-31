@@ -78,10 +78,10 @@ const SearchPage = () => {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold mb-6">Поиск клубов</h1>
+      <h1 className="text-2xl sm:text-3xl font-bold mb-6">Поиск клубов</h1>
 
       <div className="card mb-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {regionsLoading ? (
             <LoadingSpinner />
           ) : (
@@ -113,18 +113,18 @@ const SearchPage = () => {
 
       {clubsData && (
         <>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {clubsData.content.map((club) => (
               <Link key={club.id} to={`/clubs/${club.id}`} className="card hover:shadow-lg transition-shadow block">
                 {club.mainPhoto && (
                   <img
                     src={getImageUrl(club.mainPhoto.url)}
                     alt={club.name}
-                    className="w-full h-48 object-cover rounded-lg mb-4"
+                    className="w-full h-40 sm:h-48 object-cover rounded-lg mb-3 sm:mb-4"
                   />
                 )}
-                <h3 className="text-xl font-bold mb-2">{club.name}</h3>
-                <p className="text-gray-600 mb-2">{club.address}</p>
+                <h3 className="text-lg sm:text-xl font-bold mb-2">{club.name}</h3>
+                <p className="text-gray-600 text-sm sm:text-base">{club.address}</p>
               </Link>
             ))}
           </div>
