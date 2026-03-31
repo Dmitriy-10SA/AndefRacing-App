@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { Link } from 'react-router-dom'
 import { bookingApi } from '../../api/bookingApi'
@@ -7,50 +6,31 @@ import LoadingSpinner from '../../components/LoadingSpinner'
 import ErrorMessage from '../../components/ErrorMessage'
 import Pagination from '../../components/Pagination'
 import { formatDateTime } from '../../utils/formatters'
-
-// Получить текущую дату в формате YYYY-MM-DD
-const getCurrentDate = (): string => {
-  const now = new Date()
-  const year = now.getFullYear()
-  const month = String(now.getMonth() + 1).padStart(2, '0')
-  const day = String(now.getDate()).padStart(2, '0')
-  return `${year}-${month}-${day}`
-}
-
-// Добавить/вычесть дни из даты
-const addDaysToDate = (dateStr: string, days: number): string => {
-  const [year, month, day] = dateStr.split('-').map(Number)
-  const date = new Date(year, month - 1, day)
-  date.setDate(date.getDate() + days)
-
-  const newYear = date.getFullYear()
-  const newMonth = String(date.getMonth() + 1).padStart(2, '0')
-  const newDay = String(date.getDate()).padStart(2, '0')
-  return `${newYear}-${newMonth}-${newDay}`
-}
+import { usePageStateStore } from '../../stores/pageStateStore'
 
 const BookingsPage = () => {
-  const currentDate = getCurrentDate()
-  const [startDate, setStartDate] = useState(currentDate)
-  const [endDate, setEndDate] = useState(addDaysToDate(currentDate, 7))
-  const [currentPage, setCurrentPage] = useState(0)
+  const { bookingsPage, setBookingsPageState } = usePageStateStore()
+  const { startDate, endDate, currentPage } = bookingsPage
   const pageSize = 5
 
   const handleStartDateChange = (newStartDate: string) => {
-    setStartDate(newStartDate)
-    setCurrentPage(0) // Сбрасываем на первую страницу при изменении фильтра
     // Если новая дата начала позже даты окончания, сдвигаем дату окончания
     if (newStartDate > endDate) {
-      setEndDate(newStartDate)
+      setBookingsPageState({ startDate: newStartDate, endDate: newStartDate, currentPage: 0 })
+    } else {
+      setBookingsPageState({ startDate: newStartDate, currentPage: 0 })
     }
   }
 
   const handleEndDateChange = (newEndDate: string) => {
     // Не позволяем установить дату окончания раньше даты начала
     if (newEndDate >= startDate) {
-      setEndDate(newEndDate)
-      setCurrentPage(0) // Сбрасываем на первую страницу при изменении фильтра
+      setBookingsPageState({ endDate: newEndDate, currentPage: 0 })
     }
+  }
+
+  const handlePageChange = (page: number) => {
+    setBookingsPageState({ currentPage: page })
   }
 
   const { data, isLoading, error } = useQuery({
@@ -159,7 +139,7 @@ const BookingsPage = () => {
               <Pagination
                 currentPage={currentPage}
                 totalPages={pageInfo.totalPages}
-                onPageChange={setCurrentPage}
+                onPageChange={handlePageChange}
               />
             </div>
           )}

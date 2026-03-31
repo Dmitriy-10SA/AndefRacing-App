@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
 import { bookingApi } from '@/api/bookingApi'
 import { useAuthStore } from '@/stores/authStore'
+import { usePageStateStore } from '@/stores/pageStateStore'
 import LoadingSpinner from '@/components/LoadingSpinner'
 import ErrorMessage from '@/components/ErrorMessage'
 import Pagination from '@/components/Pagination'
@@ -10,21 +11,13 @@ import PhoneInput from '@/components/PhoneInput'
 import { formatDateTime } from '@/utils/formatters'
 import { validatePhone } from '@/utils/validators'
 import { BookingStatus } from '@/types'
-import { format } from 'date-fns'
 
 const BookingsPage = () => {
   const navigate = useNavigate()
   const { currentClub } = useAuthStore()
-  const [startDate, setStartDate] = useState(format(new Date(), 'yyyy-MM-dd'))
-  const [endDate, setEndDate] = useState(format(new Date(), 'yyyy-MM-dd'))
-  const [clientPhone, setClientPhone] = useState('')
-  const [pageNumber, setPageNumber] = useState(0)
+  const { bookingsPage, setBookingsPageState, setBookingsSearchParams } = usePageStateStore()
+  const { startDate, endDate, clientPhone, pageNumber, searchParams } = bookingsPage
   const [phoneError, setPhoneError] = useState('')
-  const [searchParams, setSearchParams] = useState({
-    startDate: format(new Date(), 'yyyy-MM-dd'),
-    endDate: format(new Date(), 'yyyy-MM-dd'),
-    clientPhone: '',
-  })
   const pageSize = 10
 
   const { data, isLoading, error } = useQuery({
@@ -65,6 +58,23 @@ const BookingsPage = () => {
     }
   }
 
+  const handleStartDateChange = (value: string) => {
+    setBookingsPageState({ startDate: value })
+  }
+
+  const handleEndDateChange = (value: string) => {
+    setBookingsPageState({ endDate: value })
+  }
+
+  const handleClientPhoneChange = (value: string) => {
+    setBookingsPageState({ clientPhone: value })
+    setPhoneError('')
+  }
+
+  const handlePageChange = (page: number) => {
+    setBookingsPageState({ pageNumber: page })
+  }
+
   const handleSearch = () => {
     // Validate phone if provided
     if (clientPhone && !validatePhone(clientPhone)) {
@@ -73,8 +83,8 @@ const BookingsPage = () => {
     }
 
     setPhoneError('')
-    setPageNumber(0)
-    setSearchParams({
+    setBookingsPageState({ pageNumber: 0 })
+    setBookingsSearchParams({
       startDate,
       endDate,
       clientPhone,
@@ -109,7 +119,7 @@ const BookingsPage = () => {
             <input
               type="date"
               value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
+              onChange={(e) => handleStartDateChange(e.target.value)}
               max={endDate}
               className="input"
             />
@@ -119,7 +129,7 @@ const BookingsPage = () => {
             <input
               type="date"
               value={endDate}
-              onChange={(e) => setEndDate(e.target.value)}
+              onChange={(e) => handleEndDateChange(e.target.value)}
               min={startDate}
               className="input"
             />
@@ -128,10 +138,7 @@ const BookingsPage = () => {
             <label className="label">Телефон клиента (опционально)</label>
             <PhoneInput
               value={clientPhone}
-              onChange={(value) => {
-                setClientPhone(value)
-                setPhoneError('')
-              }}
+              onChange={handleClientPhoneChange}
               placeholder="+7-XXX-XXX-XX-XX"
             />
             {phoneError && <p className="error-text mt-1">{phoneError}</p>}
@@ -200,7 +207,7 @@ const BookingsPage = () => {
               <Pagination
                 currentPage={pageNumber}
                 totalPages={data.pageInfo.totalPages}
-                onPageChange={setPageNumber}
+                onPageChange={handlePageChange}
               />
             </div>
           )}

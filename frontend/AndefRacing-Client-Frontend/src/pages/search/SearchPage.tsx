@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { Link, useSearchParams } from 'react-router-dom'
 import { searchApi } from '../../api/searchApi'
@@ -6,17 +6,31 @@ import LoadingSpinner from '../../components/LoadingSpinner'
 import Pagination from '../../components/Pagination'
 import SearchableSelect from '../../components/SearchableSelect'
 import { getImageUrl } from '../../utils/formatters'
+import { usePageStateStore } from '../../stores/pageStateStore'
 
 const SearchPage = () => {
   const [searchParams, setSearchParams] = useSearchParams()
-  const [selectedRegion, setSelectedRegion] = useState<number | null>(
-    searchParams.get('region') ? Number(searchParams.get('region')) : null
-  )
-  const [selectedCity, setSelectedCity] = useState<number | null>(
-    searchParams.get('city') ? Number(searchParams.get('city')) : null
-  )
-  const [currentPage, setCurrentPage] = useState(0)
+  const { searchPage, setSearchPageState } = usePageStateStore()
+
+  // Инициализируем состояние из URL при первой загрузке
+  const urlRegion = searchParams.get('region') ? Number(searchParams.get('region')) : null
+  const urlCity = searchParams.get('city') ? Number(searchParams.get('city')) : null
+
+  // Приоритет: URL params > store state
+  const selectedRegion = urlRegion ?? searchPage.selectedRegion
+  const selectedCity = urlCity ?? searchPage.selectedCity
+  const currentPage = searchPage.currentPage
   const pageSize = 9
+
+  // Синхронизируем store с URL при первой загрузке
+  useEffect(() => {
+    if (urlRegion !== null || urlCity !== null) {
+      setSearchPageState({
+        selectedRegion: urlRegion,
+        selectedCity: urlCity,
+      })
+    }
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   // Обновляем URL при изменении региона или города
   useEffect(() => {
@@ -44,14 +58,22 @@ const SearchPage = () => {
   })
 
   const handleRegionChange = (regionId: number) => {
-    setSelectedRegion(regionId)
-    setSelectedCity(null)
-    setCurrentPage(0)
+    setSearchPageState({
+      selectedRegion: regionId,
+      selectedCity: null,
+      currentPage: 0,
+    })
   }
 
   const handleCityChange = (cityId: number) => {
-    setSelectedCity(cityId)
-    setCurrentPage(0)
+    setSearchPageState({
+      selectedCity: cityId,
+      currentPage: 0,
+    })
+  }
+
+  const handlePageChange = (page: number) => {
+    setSearchPageState({ currentPage: page })
   }
 
   return (
@@ -116,7 +138,7 @@ const SearchPage = () => {
           <Pagination
             currentPage={currentPage}
             totalPages={clubsData.pageInfoDto.totalPages}
-            onPageChange={setCurrentPage}
+            onPageChange={handlePageChange}
           />
         </>
       )}

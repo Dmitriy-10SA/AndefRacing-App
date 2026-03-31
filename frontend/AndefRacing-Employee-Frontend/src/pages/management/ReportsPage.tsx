@@ -1,21 +1,14 @@
 import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { reportsApi } from '@/api/reportsApi'
+import { usePageStateStore } from '@/stores/pageStateStore'
 import LoadingSpinner from '@/components/LoadingSpinner'
 import ErrorMessage from '@/components/ErrorMessage'
 import { formatPrice, formatDate } from '@/utils/formatters'
-import { format } from 'date-fns'
 
 const ReportsPage = () => {
-  const [reportType, setReportType] = useState<'booking' | 'financial'>('booking')
-  const [startDate, setStartDate] = useState(() => {
-    const today = new Date()
-    return format(new Date(today.getFullYear(), today.getMonth(), 1), 'yyyy-MM-dd')
-  })
-  const [endDate, setEndDate] = useState(() => {
-    const today = new Date()
-    return format(new Date(today.getFullYear(), today.getMonth() + 1, 0), 'yyyy-MM-dd')
-  })
+  const { reportsPage, setReportsPageState } = usePageStateStore()
+  const { reportType, startDate, endDate } = reportsPage
   const [shouldFetch, setShouldFetch] = useState(false)
 
   const { data: bookingStats, isLoading: bookingLoading, error: bookingError } = useQuery({
@@ -49,7 +42,7 @@ const ReportsPage = () => {
             <select
               value={reportType}
               onChange={(e) => {
-                setReportType(e.target.value as 'booking' | 'financial')
+                setReportsPageState({ reportType: e.target.value as 'booking' | 'financial' })
                 setShouldFetch(false)
               }}
               className="input"
@@ -64,7 +57,7 @@ const ReportsPage = () => {
               type="date"
               value={startDate}
               onChange={(e) => {
-                setStartDate(e.target.value)
+                setReportsPageState({ startDate: e.target.value })
                 setShouldFetch(false)
               }}
               max={endDate}
@@ -77,7 +70,7 @@ const ReportsPage = () => {
               type="date"
               value={endDate}
               onChange={(e) => {
-                setEndDate(e.target.value)
+                setReportsPageState({ endDate: e.target.value })
                 setShouldFetch(false)
               }}
               min={startDate}
