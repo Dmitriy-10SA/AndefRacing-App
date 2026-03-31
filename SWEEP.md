@@ -41,6 +41,43 @@ docker compose logs backend --tail=50
 docker compose ps
 ```
 
+## Frontend Testing
+
+### Запуск тестов Client Frontend
+```bash
+cd frontend/AndefRacing-Client-Frontend && npm test -- --run
+```
+
+### Запуск тестов Employee Frontend
+```bash
+cd frontend/AndefRacing-Employee-Frontend && npm test -- --run
+```
+
+### Запуск тестов в watch режиме
+```bash
+cd frontend/AndefRacing-Client-Frontend && npm test
+cd frontend/AndefRacing-Employee-Frontend && npm test
+```
+
+### Запуск тестов с coverage
+```bash
+cd frontend/AndefRacing-Client-Frontend && npm test -- --coverage
+cd frontend/AndefRacing-Employee-Frontend && npm test -- --coverage
+```
+
+### Структура тестов
+Тесты расположены в папке `src/__tests__/` с зеркальной структурой к исходному коду:
+```
+src/__tests__/
+├── utils/
+│   ├── formatters.test.ts
+│   ├── validators.test.ts
+│   └── imageUtils.test.ts (только Employee)
+└── stores/
+    ├── authStore.test.ts
+    └── pageStateStore.test.ts
+```
+
 ## Важные замечания
 
 ### Статические файлы (фотографии)
