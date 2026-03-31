@@ -161,8 +161,8 @@ const ClubDetailsPage = () => {
         <div className="mb-6">
           <h2 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">Контакты</h2>
           <div className="space-y-2 text-sm sm:text-base">
-            <p><strong>Телефон:</strong> <a href={`tel:${club.phone}`} className="text-primary-600 hover:underline">{club.phone}</a></p>
-            <p><strong>Email:</strong> <a href={`mailto:${club.email}`} className="text-primary-600 hover:underline break-all">{club.email}</a></p>
+            <p><strong>Телефон:</strong> <a href={`tel:${club.phone}`} className="hover:underline">{club.phone}</a></p>
+            <p><strong>Email:</strong> <a href={`mailto:${club.email}`} className="hover:underline break-all">{club.email}</a></p>
           </div>
         </div>
 
