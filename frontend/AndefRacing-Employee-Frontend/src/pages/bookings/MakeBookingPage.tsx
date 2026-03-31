@@ -124,12 +124,12 @@ const MakeBookingPage = () => {
       <ToastContainer />
       <button
         onClick={() => navigate('/bookings')}
-        className="mb-4 text-primary-600 hover:text-primary-700 flex items-center gap-2"
+        className="mb-4 text-primary-600 hover:text-primary-700 flex items-center gap-2 text-sm sm:text-base"
       >
         ← Назад к списку
       </button>
 
-      <h1 className="text-3xl font-bold mb-6">Создать бронирование</h1>
+      <h1 className="text-2xl sm:text-3xl font-bold mb-6">Создать бронирование</h1>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <div className="card">
@@ -210,13 +210,13 @@ const MakeBookingPage = () => {
               <p className="text-gray-500">Нет доступных слотов на выбранную дату</p>
             )}
             {freeSlots && freeSlots.length > 0 && (
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2 sm:gap-3">
                 {freeSlots.map((slot, index) => (
                   <button
                     key={index}
                     type="button"
                     onClick={() => setSelectedSlot(slot)}
-                    className={`p-3 border rounded-lg transition-colors ${
+                    className={`p-2 sm:p-3 border rounded-lg transition-colors text-sm sm:text-base ${
                       selectedSlot === slot
                         ? 'border-primary-500 bg-primary-50 text-primary-700'
                         : 'border-gray-300 hover:border-primary-300'
@@ -240,18 +240,18 @@ const MakeBookingPage = () => {
           />
         </div>
 
-        <div className="flex gap-3">
+        <div className="flex flex-col sm:flex-row gap-3">
           <button
             type="button"
             onClick={() => navigate('/bookings')}
-            className="btn-secondary flex-1"
+            className="btn-secondary flex-1 order-2 sm:order-1"
           >
             Отмена
           </button>
           <button
             type="submit"
             disabled={!selectedSlot || makeBookingMutation.isPending}
-            className="btn-primary flex-1"
+            className="btn-primary flex-1 order-1 sm:order-2"
           >
             {makeBookingMutation.isPending ? 'Создание...' : 'Создать бронирование'}
           </button>

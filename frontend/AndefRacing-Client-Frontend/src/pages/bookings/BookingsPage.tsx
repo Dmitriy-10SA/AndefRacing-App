@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { Link } from 'react-router-dom'
 import { bookingApi } from '../../api/bookingApi'
@@ -7,50 +6,31 @@ import LoadingSpinner from '../../components/LoadingSpinner'
 import ErrorMessage from '../../components/ErrorMessage'
 import Pagination from '../../components/Pagination'
 import { formatDateTime } from '../../utils/formatters'
-
-// Получить текущую дату в формате YYYY-MM-DD
-const getCurrentDate = (): string => {
-  const now = new Date()
-  const year = now.getFullYear()
-  const month = String(now.getMonth() + 1).padStart(2, '0')
-  const day = String(now.getDate()).padStart(2, '0')
-  return `${year}-${month}-${day}`
-}
-
-// Добавить/вычесть дни из даты
-const addDaysToDate = (dateStr: string, days: number): string => {
-  const [year, month, day] = dateStr.split('-').map(Number)
-  const date = new Date(year, month - 1, day)
-  date.setDate(date.getDate() + days)
-
-  const newYear = date.getFullYear()
-  const newMonth = String(date.getMonth() + 1).padStart(2, '0')
-  const newDay = String(date.getDate()).padStart(2, '0')
-  return `${newYear}-${newMonth}-${newDay}`
-}
+import { usePageStateStore } from '../../stores/pageStateStore'
 
 const BookingsPage = () => {
-  const currentDate = getCurrentDate()
-  const [startDate, setStartDate] = useState(currentDate)
-  const [endDate, setEndDate] = useState(addDaysToDate(currentDate, 7))
-  const [currentPage, setCurrentPage] = useState(0)
+  const { bookingsPage, setBookingsPageState } = usePageStateStore()
+  const { startDate, endDate, currentPage } = bookingsPage
   const pageSize = 5
 
   const handleStartDateChange = (newStartDate: string) => {
-    setStartDate(newStartDate)
-    setCurrentPage(0) // Сбрасываем на первую страницу при изменении фильтра
     // Если новая дата начала позже даты окончания, сдвигаем дату окончания
     if (newStartDate > endDate) {
-      setEndDate(newStartDate)
+      setBookingsPageState({ startDate: newStartDate, endDate: newStartDate, currentPage: 0 })
+    } else {
+      setBookingsPageState({ startDate: newStartDate, currentPage: 0 })
     }
   }
 
   const handleEndDateChange = (newEndDate: string) => {
     // Не позволяем установить дату окончания раньше даты начала
     if (newEndDate >= startDate) {
-      setEndDate(newEndDate)
-      setCurrentPage(0) // Сбрасываем на первую страницу при изменении фильтра
+      setBookingsPageState({ endDate: newEndDate, currentPage: 0 })
     }
+  }
+
+  const handlePageChange = (page: number) => {
+    setBookingsPageState({ currentPage: page })
   }
 
   const { data, isLoading, error } = useQuery({
@@ -84,10 +64,10 @@ const BookingsPage = () => {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold mb-6">Мои бронирования</h1>
+      <h1 className="text-2xl sm:text-3xl font-bold mb-6">Мои бронирования</h1>
 
       <div className="card mb-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label className="label">Дата начала</label>
             <input
@@ -120,35 +100,35 @@ const BookingsPage = () => {
                 to={`/bookings/${booking.club.id}/${booking.id}`}
                 className="card hover:shadow-lg transition-shadow block"
               >
-                <div className="flex justify-between items-start mb-4">
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2 mb-4">
                   <div>
-                    <h3 className="text-xl font-bold mb-1">{booking.club.name}</h3>
-                    <p className="text-gray-600">
+                    <h3 className="text-lg sm:text-xl font-bold mb-1">{booking.club.name}</h3>
+                    <p className="text-gray-600 text-sm sm:text-base">
                       {booking.city.name}, {booking.city.region.name}
                     </p>
                   </div>
-                  <span className={`px-3 py-1 rounded-full text-sm font-semibold ${getStatusColor(booking.status)}`}>
+                  <span className={`px-3 py-1 rounded-full text-xs sm:text-sm font-semibold self-start ${getStatusColor(booking.status)}`}>
                     {getStatusText(booking.status)}
                   </span>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                   <div>
-                    <p className="text-sm text-gray-600">Начало</p>
-                    <p className="font-semibold">
+                    <p className="text-xs sm:text-sm text-gray-600">Начало</p>
+                    <p className="font-semibold text-sm sm:text-base">
                       {formatDateTime(booking.startDateTime)}
                     </p>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-600">Окончание</p>
-                    <p className="font-semibold">
+                    <p className="text-xs sm:text-sm text-gray-600">Окончание</p>
+                    <p className="font-semibold text-sm sm:text-base">
                       {formatDateTime(booking.endDateTime)}
                     </p>
                   </div>
                 </div>
 
-                <div className="mt-4">
-                  <p className="text-gray-600">{booking.club.address}</p>
+                <div className="mt-3 sm:mt-4">
+                  <p className="text-gray-600 text-sm sm:text-base">{booking.club.address}</p>
                 </div>
               </Link>
             ))}
@@ -159,7 +139,7 @@ const BookingsPage = () => {
               <Pagination
                 currentPage={currentPage}
                 totalPages={pageInfo.totalPages}
-                onPageChange={setCurrentPage}
+                onPageChange={handlePageChange}
               />
             </div>
           )}

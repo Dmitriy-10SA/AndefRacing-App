@@ -102,16 +102,16 @@ const BookingDetailsPage = () => {
       <ToastContainer />
       <button
         onClick={() => navigate('/bookings')}
-        className="mb-4 text-primary-600 hover:text-primary-700 flex items-center gap-2"
+        className="mb-4 text-primary-600 hover:text-primary-700 flex items-center gap-2 text-sm sm:text-base"
       >
         ← Назад к списку
       </button>
 
       <div className="card">
-        <div className="flex justify-between items-start mb-6">
-          <h1 className="text-2xl font-bold">Бронирование #{booking.id}</h1>
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3 mb-6">
+          <h1 className="text-xl sm:text-2xl font-bold">Бронирование</h1>
           <span
-            className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(
+            className={`px-3 py-1 rounded-full text-sm font-medium self-start ${getStatusColor(
               booking.status
             )}`}
           >
@@ -158,7 +158,7 @@ const BookingDetailsPage = () => {
           )}
         </div>
 
-        <div className="mt-6 flex gap-3">
+        <div className="mt-6 flex flex-col sm:flex-row gap-3">
           {canConfirmPayment && (
             <button
               onClick={() => setShowConfirmPaymentModal(true)}

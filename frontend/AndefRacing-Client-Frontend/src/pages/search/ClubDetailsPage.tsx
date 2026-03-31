@@ -89,8 +89,8 @@ const ClubDetailsPage = () => {
       )}
 
       <div className="card mb-6">
-        <div className="flex justify-between items-start mb-6">
-          <h1 className="text-3xl font-bold">{club.name}</h1>
+        <div className="flex justify-between items-start gap-3 mb-6">
+          <h1 className="text-2xl sm:text-3xl font-bold">{club.name}</h1>
           <FavoriteButton
             isFavorite={isFavorite}
             onClick={handleFavoriteToggle}
@@ -105,14 +105,14 @@ const ClubDetailsPage = () => {
 
         {club.photos.length > 0 && (
           <div className="mb-6">
-            <h2 className="text-xl font-bold mb-4">Фотографии</h2>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <h2 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">Фотографии</h2>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-2 sm:gap-4">
               {club.photos.map((photo) => (
                 <img
                   key={photo.id}
                   src={getImageUrl(photo.url)}
                   alt={club.name}
-                  className="w-full h-48 object-cover rounded-lg"
+                  className="w-full h-32 sm:h-48 object-cover rounded-lg"
                 />
               ))}
             </div>
@@ -121,35 +121,17 @@ const ClubDetailsPage = () => {
 
         {club.games.length > 0 && (
           <div className="mb-6">
-            <h2 className="text-xl font-bold mb-4">Доступные игры</h2>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-              {club.games.map((game) => (
-                <div
-                  key={game.id}
-                  className="bg-white border-2 border-primary-200 rounded-lg overflow-hidden hover:border-primary-400 transition-colors"
-                >
-                  {game.photo && (
-                    <img
-                      src={getImageUrl(game.photo.url)}
-                      alt={game.name}
-                      className="w-full h-32 object-cover"
-                    />
-                  )}
-                  <div className="p-3 text-center">
-                    <span className="font-medium text-primary-800">{game.name}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
+            <h2 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">Доступные игры</h2>
+            <p className="text-sm sm:text-base">{club.games.map((game) => game.name).join(' • ')}</p>
           </div>
         )}
 
         {club.prices.length > 0 && (
           <div className="mb-6">
-            <h2 className="text-xl font-bold mb-4">Цены</h2>
+            <h2 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">Цены</h2>
             <div className="space-y-2">
               {club.prices.map((price) => (
-                <div key={price.id} className="flex justify-between items-center">
+                <div key={price.id} className="flex justify-between items-center text-sm sm:text-base">
                   <span>{price.durationMinutes} минут</span>
                   <span className="font-semibold">{price.value} ₽</span>
                 </div>
@@ -160,10 +142,10 @@ const ClubDetailsPage = () => {
 
         {club.workSchedules.length > 0 && (
           <div className="mb-6">
-            <h2 className="text-xl font-bold mb-4">График работы</h2>
+            <h2 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">График работы</h2>
             <div className="space-y-2">
               {club.workSchedules.map((schedule) => (
-                <div key={schedule.id} className="flex justify-between items-center">
+                <div key={schedule.id} className="flex justify-between items-center text-sm sm:text-base">
                   <span>{getDayName(schedule.dayOfWeek)}</span>
                   {schedule.isWorkDay ? (
                     <span>{schedule.openTime.slice(0, 5)} - {schedule.closeTime.slice(0, 5)}</span>
@@ -177,17 +159,17 @@ const ClubDetailsPage = () => {
         )}
 
         <div className="mb-6">
-          <h2 className="text-xl font-bold mb-4">Контакты</h2>
-          <div className="space-y-2">
-            <p><strong>Телефон:</strong> {club.phone}</p>
-            <p><strong>Email:</strong> {club.email}</p>
+          <h2 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">Контакты</h2>
+          <div className="space-y-2 text-sm sm:text-base">
+            <p><strong>Телефон:</strong> <a href={`tel:${club.phone}`} className="hover:underline">{club.phone}</a></p>
+            <p><strong>Email:</strong> <a href={`mailto:${club.email}`} className="hover:underline break-all">{club.email}</a></p>
           </div>
         </div>
 
         {club.isOpen && isAuthenticated && (
           <Link
             to={`/clubs/${clubId}/book`}
-            className="btn-primary inline-block"
+            className="btn-primary inline-block w-full sm:w-auto text-center"
           >
             Забронировать
           </Link>
@@ -196,7 +178,7 @@ const ClubDetailsPage = () => {
         {club.isOpen && !isAuthenticated && (
           <Link
             to="/auth/login"
-            className="btn-primary inline-block"
+            className="btn-primary inline-block w-full sm:w-auto text-center"
           >
             Войдите для бронирования
           </Link>

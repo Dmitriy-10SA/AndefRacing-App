@@ -221,11 +221,11 @@ const HRManagementPage = () => {
 
   return (
     <div className="max-w-6xl mx-auto">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">Управление персоналом</h1>
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
+        <h1 className="text-2xl sm:text-3xl font-bold">Управление персоналом</h1>
         <button
           onClick={() => setShowAddModal(true)}
-          className="btn-primary"
+          className="btn-primary w-full sm:w-auto"
         >
           Добавить сотрудника
         </button>
@@ -246,7 +246,7 @@ const HRManagementPage = () => {
       <div className="space-y-4">
         {employees?.filter((emp) => emp.employeeDto.phone !== currentUser?.phone).map((emp) => (
           <div key={emp.employeeDto.id} className="card">
-            <div className="flex justify-between items-start">
+            <div className="flex flex-col lg:flex-row lg:justify-between lg:items-start gap-4">
               <div className="flex-1">
                 <h3 className="text-lg font-semibold">
                   {emp.employeeDto.surname} {emp.employeeDto.name}{emp.employeeDto.patronymic ? ` ${emp.employeeDto.patronymic}` : ''}
@@ -272,7 +272,7 @@ const HRManagementPage = () => {
                   ))}
                 </div>
               </div>
-              <div className="flex gap-2">
+              <div className="flex flex-col sm:flex-row gap-2 w-full lg:w-auto">
                 <select
                   onChange={(e) => {
                     const role = e.target.value as EmployeeRole
@@ -281,7 +281,7 @@ const HRManagementPage = () => {
                     }
                     e.target.value = ''
                   }}
-                  className="input text-sm"
+                  className="input text-sm w-full sm:w-auto"
                   defaultValue=""
                 >
                   <option value="" disabled>
@@ -297,7 +297,7 @@ const HRManagementPage = () => {
                 </select>
                 <button
                   onClick={() => handleDeleteEmployee(emp.employeeDto.id)}
-                  className="btn-danger"
+                  className="btn-danger w-full sm:w-auto"
                 >
                   Удалить
                 </button>
