@@ -122,25 +122,7 @@ const ClubDetailsPage = () => {
         {club.games.length > 0 && (
           <div className="mb-6">
             <h2 className="text-xl font-bold mb-4">Доступные игры</h2>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-              {club.games.map((game) => (
-                <div
-                  key={game.id}
-                  className="bg-white border-2 border-primary-200 rounded-lg overflow-hidden hover:border-primary-400 transition-colors"
-                >
-                  {game.photo && (
-                    <img
-                      src={getImageUrl(game.photo.url)}
-                      alt={game.name}
-                      className="w-full h-32 object-cover"
-                    />
-                  )}
-                  <div className="p-3 text-center">
-                    <span className="font-medium text-primary-800">{game.name}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
+            <p>{club.games.map((game) => game.name).join(' • ')}</p>
           </div>
         )}
 
