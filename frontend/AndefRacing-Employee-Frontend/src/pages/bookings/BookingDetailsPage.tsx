@@ -109,7 +109,7 @@ const BookingDetailsPage = () => {
 
       <div className="card">
         <div className="flex justify-between items-start mb-6">
-          <h1 className="text-2xl font-bold">Бронирование #{booking.id}</h1>
+          <h1 className="text-2xl font-bold">Бронирование</h1>
           <span
             className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(
               booking.status

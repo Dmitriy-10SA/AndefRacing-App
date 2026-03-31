@@ -175,7 +175,7 @@ const BookingsPage = () => {
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-2">
                         <h3 className="text-lg font-semibold">
-                          Бронирование #{booking.id}
+                          Бронирование
                         </h3>
                         <span
                           className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(
