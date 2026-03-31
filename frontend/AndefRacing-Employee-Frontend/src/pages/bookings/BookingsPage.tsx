@@ -101,11 +101,11 @@ const BookingsPage = () => {
 
   return (
     <div className="max-w-6xl mx-auto">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">Бронирования</h1>
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
+        <h1 className="text-2xl sm:text-3xl font-bold">Бронирования</h1>
         <button
           onClick={() => navigate('/bookings/make')}
-          className="btn-primary"
+          className="btn-primary w-full sm:w-auto"
         >
           Создать бронирование
         </button>

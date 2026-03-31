@@ -44,7 +44,7 @@ const ProfilePage = () => {
     <div className="max-w-2xl mx-auto">
       <ToastContainer />
       <div className="mb-6">
-        <h1 className="text-3xl font-bold">Мой профиль</h1>
+        <h1 className="text-2xl sm:text-3xl font-bold">Мой профиль</h1>
       </div>
 
       <div className="space-y-6">

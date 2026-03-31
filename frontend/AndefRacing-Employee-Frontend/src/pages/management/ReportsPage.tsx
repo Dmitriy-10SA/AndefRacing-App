@@ -32,11 +32,11 @@ const ReportsPage = () => {
 
   return (
     <div className="max-w-6xl mx-auto">
-      <h1 className="text-3xl font-bold mb-6">Отчеты</h1>
+      <h1 className="text-2xl sm:text-3xl font-bold mb-6">Отчеты</h1>
 
       <div className="card mb-6">
         <h2 className="text-lg font-semibold mb-4">Параметры отчета</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           <div>
             <label className="label">Тип отчета</label>
             <select
@@ -78,7 +78,7 @@ const ReportsPage = () => {
             />
           </div>
         </div>
-        <button onClick={handleGenerateReport} className="btn-primary mt-4">
+        <button onClick={handleGenerateReport} className="btn-primary mt-4 w-full sm:w-auto">
           Сформировать отчет
         </button>
       </div>
@@ -93,22 +93,22 @@ const ReportsPage = () => {
 
       {shouldFetch && reportType === 'booking' && bookingStats && (
         <div className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
             <div className="card">
-              <h3 className="text-sm text-gray-600 mb-2">Всего бронирований</h3>
-              <p className="text-3xl font-bold text-primary-600">
+              <h3 className="text-xs sm:text-sm text-gray-600 mb-2">Всего бронирований</h3>
+              <p className="text-2xl sm:text-3xl font-bold text-primary-600">
                 {bookingStats.bookingsCount}
               </p>
             </div>
             <div className="card">
-              <h3 className="text-sm text-gray-600 mb-2">Процент отмен</h3>
-              <p className="text-3xl font-bold text-red-600">
+              <h3 className="text-xs sm:text-sm text-gray-600 mb-2">Процент отмен</h3>
+              <p className="text-2xl sm:text-3xl font-bold text-red-600">
                 {bookingStats.cancellationsPercent.toFixed(1)}%
               </p>
             </div>
-            <div className="card">
-              <h3 className="text-sm text-gray-600 mb-2">Период</h3>
-              <p className="text-lg font-semibold">
+            <div className="card col-span-2 lg:col-span-1">
+              <h3 className="text-xs sm:text-sm text-gray-600 mb-2">Период</h3>
+              <p className="text-sm sm:text-lg font-semibold">
                 {formatDate(bookingStats.startDate)} - {formatDate(bookingStats.endDate)}
               </p>
             </div>
@@ -142,22 +142,22 @@ const ReportsPage = () => {
 
       {shouldFetch && reportType === 'financial' && financialStats && (
         <div className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
             <div className="card">
-              <h3 className="text-sm text-gray-600 mb-2">Общая выручка</h3>
-              <p className="text-3xl font-bold text-green-600">
+              <h3 className="text-xs sm:text-sm text-gray-600 mb-2">Общая выручка</h3>
+              <p className="text-xl sm:text-3xl font-bold text-green-600">
                 {formatPrice(financialStats.totalRevenue)}
               </p>
             </div>
             <div className="card">
-              <h3 className="text-sm text-gray-600 mb-2">Средний чек</h3>
-              <p className="text-3xl font-bold text-primary-600">
+              <h3 className="text-xs sm:text-sm text-gray-600 mb-2">Средний чек</h3>
+              <p className="text-xl sm:text-3xl font-bold text-primary-600">
                 {formatPrice(financialStats.averageReceipt)}
               </p>
             </div>
-            <div className="card">
-              <h3 className="text-sm text-gray-600 mb-2">Период</h3>
-              <p className="text-lg font-semibold">
+            <div className="card col-span-2 lg:col-span-1">
+              <h3 className="text-xs sm:text-sm text-gray-600 mb-2">Период</h3>
+              <p className="text-sm sm:text-lg font-semibold">
                 {formatDate(financialStats.startDate)} - {formatDate(financialStats.endDate)}
               </p>
             </div>
