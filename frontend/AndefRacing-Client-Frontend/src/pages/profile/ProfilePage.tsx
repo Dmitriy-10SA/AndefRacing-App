@@ -15,9 +15,9 @@ const ProfilePage = () => {
 
   return (
     <div className="max-w-2xl mx-auto">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">Мой профиль</h1>
-        <Link to="/profile/edit" className="btn-primary">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
+        <h1 className="text-2xl sm:text-3xl font-bold">Мой профиль</h1>
+        <Link to="/profile/edit" className="btn-primary text-center">
           Редактировать
         </Link>
       </div>

@@ -8,12 +8,18 @@ import Pagination from '../../components/Pagination'
 import FavoriteButton from '../../components/FavoriteButton'
 import ConfirmModal from '../../components/ConfirmModal'
 import { getImageUrl } from '../../utils/formatters'
+import { usePageStateStore } from '../../stores/pageStateStore'
 
 const FavoriteClubsPage = () => {
-  const [currentPage, setCurrentPage] = useState(0)
+  const { favoritesPage, setFavoritesPageState } = usePageStateStore()
+  const currentPage = favoritesPage.currentPage
   const [clubToRemove, setClubToRemove] = useState<number | null>(null)
   const pageSize = 9
   const queryClient = useQueryClient()
+
+  const handlePageChange = (page: number) => {
+    setFavoritesPageState({ currentPage: page })
+  }
 
   const { data, isLoading, error } = useQuery({
     queryKey: ['favoriteClubs', currentPage],
@@ -85,7 +91,7 @@ const FavoriteClubsPage = () => {
           <Pagination
             currentPage={currentPage}
             totalPages={data.pageInfo.totalPages}
-            onPageChange={setCurrentPage}
+            onPageChange={handlePageChange}
           />
         </>
       ) : (

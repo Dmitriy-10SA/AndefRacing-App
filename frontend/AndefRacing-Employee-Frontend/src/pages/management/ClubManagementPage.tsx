@@ -411,13 +411,13 @@ const ClubManagementPage = () => {
   return (
     <div className="max-w-6xl mx-auto">
       <ToastContainer />
-      <h1 className="text-3xl font-bold mb-6">Управление клубом</h1>
+      <h1 className="text-2xl sm:text-3xl font-bold mb-6">Управление клубом</h1>
 
       <div className="mb-6 border-b-2 border-gray-300">
-        <div className="flex gap-4">
+        <div className="flex gap-1 sm:gap-4 overflow-x-auto pb-1 -mb-[2px] scrollbar-hide">
           <button
             onClick={() => setActiveTab('general')}
-            className={`pb-3 px-4 transition-colors ${
+            className={`pb-3 px-2 sm:px-4 transition-colors whitespace-nowrap text-sm sm:text-base flex-shrink-0 ${
               activeTab === 'general'
                 ? 'border-b-3 border-primary-600 text-primary-600 font-semibold'
                 : 'text-gray-600 hover:text-gray-900'
@@ -428,7 +428,7 @@ const ClubManagementPage = () => {
           </button>
           <button
             onClick={() => setActiveTab('prices')}
-            className={`pb-3 px-4 transition-colors ${
+            className={`pb-3 px-2 sm:px-4 transition-colors whitespace-nowrap text-sm sm:text-base flex-shrink-0 ${
               activeTab === 'prices'
                 ? 'border-b-3 border-primary-600 text-primary-600 font-semibold'
                 : 'text-gray-600 hover:text-gray-900'
@@ -439,7 +439,7 @@ const ClubManagementPage = () => {
           </button>
           <button
             onClick={() => setActiveTab('games')}
-            className={`pb-3 px-4 transition-colors ${
+            className={`pb-3 px-2 sm:px-4 transition-colors whitespace-nowrap text-sm sm:text-base flex-shrink-0 ${
               activeTab === 'games'
                 ? 'border-b-3 border-primary-600 text-primary-600 font-semibold'
                 : 'text-gray-600 hover:text-gray-900'
@@ -450,7 +450,7 @@ const ClubManagementPage = () => {
           </button>
           <button
             onClick={() => setActiveTab('schedule')}
-            className={`pb-3 px-4 transition-colors ${
+            className={`pb-3 px-2 sm:px-4 transition-colors whitespace-nowrap text-sm sm:text-base flex-shrink-0 ${
               activeTab === 'schedule'
                 ? 'border-b-3 border-primary-600 text-primary-600 font-semibold'
                 : 'text-gray-600 hover:text-gray-900'
@@ -461,25 +461,25 @@ const ClubManagementPage = () => {
           </button>
           <button
             onClick={() => setActiveTab('exceptions')}
-            className={`pb-3 px-4 transition-colors ${
+            className={`pb-3 px-2 sm:px-4 transition-colors whitespace-nowrap text-sm sm:text-base flex-shrink-0 ${
               activeTab === 'exceptions'
                 ? 'border-b-3 border-primary-600 text-primary-600 font-semibold'
                 : 'text-gray-600 hover:text-gray-900'
             }`}
             style={activeTab === 'exceptions' ? { borderBottomWidth: '3px' } : {}}
           >
-            Дни-исключения
+            Исключения
           </button>
           <button
             onClick={() => setActiveTab('photos')}
-            className={`pb-3 px-4 transition-colors ${
+            className={`pb-3 px-2 sm:px-4 transition-colors whitespace-nowrap text-sm sm:text-base flex-shrink-0 ${
               activeTab === 'photos'
                 ? 'border-b-3 border-primary-600 text-primary-600 font-semibold'
                 : 'text-gray-600 hover:text-gray-900'
             }`}
             style={activeTab === 'photos' ? { borderBottomWidth: '3px' } : {}}
           >
-            Фотографии
+            Фото
           </button>
         </div>
       </div>
@@ -487,18 +487,18 @@ const ClubManagementPage = () => {
       {activeTab === 'general' && (
         <div className="space-y-6">
           <div className="card">
-            <h2 className="text-xl font-semibold mb-4">Игровые места</h2>
-            <div className="flex items-center gap-4">
+            <h2 className="text-lg sm:text-xl font-semibold mb-4">Игровые места</h2>
+            <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
               <input
                 type="number"
                 value={cntEquipment}
                 onChange={(e) => setCntEquipment(Number(e.target.value))}
-                className="input w-32"
+                className="input w-full sm:w-32"
                 min="1"
               />
               <button
                 onClick={() => setShowUpdateEquipmentModal(true)}
-                className="btn-primary"
+                className="btn-primary w-full sm:w-auto"
               >
                 Обновить
               </button>
@@ -506,7 +506,7 @@ const ClubManagementPage = () => {
           </div>
 
           <div className="card">
-            <h2 className="text-xl font-semibold mb-4">Статус клуба</h2>
+            <h2 className="text-lg sm:text-xl font-semibold mb-4">Статус клуба</h2>
             <p className="mb-4">
               Текущий статус:{' '}
               <span
@@ -517,14 +517,14 @@ const ClubManagementPage = () => {
                 {clubInfo?.isOpen ? 'Открыт' : 'Закрыт'}
               </span>
             </p>
-            <div className="flex gap-3">
+            <div className="flex flex-col sm:flex-row gap-3">
               {!clubInfo?.isOpen && (
-                <button onClick={() => setShowOpenModal(true)} className="btn-primary">
+                <button onClick={() => setShowOpenModal(true)} className="btn-primary w-full sm:w-auto">
                   Открыть клуб
                 </button>
               )}
               {clubInfo?.isOpen && (
-                <button onClick={() => setShowCloseModal(true)} className="btn-danger">
+                <button onClick={() => setShowCloseModal(true)} className="btn-danger w-full sm:w-auto">
                   Закрыть клуб
                 </button>
               )}
@@ -535,9 +535,9 @@ const ClubManagementPage = () => {
 
       {activeTab === 'prices' && (
         <div className="space-y-6">
-          <div className="flex justify-between items-center">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
             <h2 className="text-xl font-semibold">Цены</h2>
-            <button onClick={() => setShowAddPriceModal(true)} className="btn-primary">
+            <button onClick={() => setShowAddPriceModal(true)} className="btn-primary w-full sm:w-auto">
               Добавить цену
             </button>
           </div>
@@ -636,15 +636,15 @@ const ClubManagementPage = () => {
           <h2 className="text-xl font-semibold mb-4">Основной график работы</h2>
           <div className="space-y-3">
             {clubInfo?.workSchedules.map((schedule) => (
-              <div key={schedule.id} className="flex justify-between items-center p-3 border rounded">
-                <div>
+              <div key={schedule.id} className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 p-3 border rounded">
+                <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4">
                   <span className="font-medium">{formatDayOfWeek(schedule.dayOfWeek)}</span>
                   {schedule.isWorkDay ? (
-                    <span className="ml-4 text-gray-600">
+                    <span className="text-gray-600">
                       {formatTimeByHoursAndMinutes(schedule.openTime)} - {formatTimeByHoursAndMinutes(schedule.closeTime)}
                     </span>
                   ) : (
-                    <span className="ml-4 text-red-600">Выходной</span>
+                    <span className="text-red-600">Выходной</span>
                   )}
                 </div>
                 <button
@@ -652,7 +652,7 @@ const ClubManagementPage = () => {
                     setSelectedSchedule(schedule)
                     setShowEditScheduleModal(true)
                   }}
-                  className="text-primary-600 hover:text-primary-800"
+                  className="text-primary-600 hover:text-primary-800 self-end sm:self-auto"
                 >
                   Изменить
                 </button>
@@ -665,9 +665,9 @@ const ClubManagementPage = () => {
       {activeTab === 'photos' && (
         <div className="space-y-6">
           <div className="card">
-            <h2 className="text-xl font-semibold mb-4">Текущие фотографии</h2>
+            <h2 className="text-lg sm:text-xl font-semibold mb-4">Текущие фотографии</h2>
             {clubInfo?.photos && clubInfo.photos.length > 0 ? (
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-4">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-4 mb-4">
                 {clubInfo.photos.map((photo) => (
                   <div key={photo.id} className="relative aspect-square">
                     <img
@@ -690,8 +690,8 @@ const ClubManagementPage = () => {
           </div>
 
           <div className="card">
-            <h2 className="text-xl font-semibold mb-4">Загрузить новые фотографии</h2>
-            <p className="text-sm text-gray-600 mb-4">
+            <h2 className="text-lg sm:text-xl font-semibold mb-4">Загрузить новые фотографии</h2>
+            <p className="text-xs sm:text-sm text-gray-600 mb-4">
               Загрузите фотографии и измените их порядок перетаскиванием. Только JPEG, максимум 10 МБ каждая.
               {clubInfo?.isOpen && ' Для открытого клуба необходима минимум 1 фотография.'}
             </p>
@@ -702,11 +702,11 @@ const ClubManagementPage = () => {
               multiple
               onChange={handlePhotoUpload}
               disabled={managePhotosMutation.isPending}
-              className="mb-4"
+              className="mb-4 w-full text-sm"
             />
 
             {photoPreviews.length > 0 && (
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-4">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-4 mb-4">
                 {photoPreviews.map((preview, index) => (
                   <div
                     key={index}
@@ -737,11 +737,11 @@ const ClubManagementPage = () => {
               </div>
             )}
 
-            <div className="flex gap-3">
+            <div className="flex flex-col sm:flex-row gap-3">
               <button
                 onClick={handleSavePhotos}
                 disabled={photos.length === 0 || managePhotosMutation.isPending}
-                className="btn-primary"
+                className="btn-primary w-full sm:w-auto"
               >
                 {managePhotosMutation.isPending ? 'Сохранение...' : 'Сохранить фотографии'}
               </button>
@@ -749,7 +749,7 @@ const ClubManagementPage = () => {
                 <button
                   onClick={handleClearPhotos}
                   disabled={managePhotosMutation.isPending}
-                  className="btn-danger"
+                  className="btn-danger w-full sm:w-auto"
                 >
                   Удалить все фотографии
                 </button>
@@ -761,13 +761,13 @@ const ClubManagementPage = () => {
 
       {activeTab === 'exceptions' && (
         <div className="card">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-semibold">Дни-исключения в расписании</h2>
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-4">
+            <h2 className="text-lg sm:text-xl font-semibold">Дни-исключения в расписании</h2>
             <button
               onClick={() => setShowAddExceptionModal(true)}
-              className="btn-primary"
+              className="btn-primary w-full sm:w-auto text-sm sm:text-base"
             >
-              Добавить день-исключение
+              Добавить исключение
             </button>
           </div>
 
@@ -796,18 +796,18 @@ const ClubManagementPage = () => {
           {workScheduleExceptions && workScheduleExceptions.length > 0 ? (
             <div className="space-y-3">
               {workScheduleExceptions.map((exception) => (
-                <div key={exception.id} className="flex justify-between items-center p-3 border rounded">
-                  <div>
+                <div key={exception.id} className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 p-3 border rounded">
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4">
                     <span className="font-medium">{formatDate(exception.date)}</span>
                     {exception.isWorkDay ? (
-                      <span className="ml-4 text-gray-600">
+                      <span className="text-gray-600">
                         {formatTimeByHoursAndMinutes(exception.openTime)} - {formatTimeByHoursAndMinutes(exception.closeTime)}
                       </span>
                     ) : (
-                      <span className="ml-4 text-red-600">Выходной</span>
+                      <span className="text-red-600">Выходной</span>
                     )}
                     {exception.description && (
-                      <span className="ml-4 text-gray-500 text-sm">
+                      <span className="text-gray-500 text-sm">
                         ({exception.description})
                       </span>
                     )}
@@ -817,7 +817,7 @@ const ClubManagementPage = () => {
                       setSelectedExceptionId(exception.id)
                       setShowDeleteExceptionModal(true)
                     }}
-                    className="text-red-600 hover:text-red-800"
+                    className="text-red-600 hover:text-red-800 self-end sm:self-auto"
                   >
                     Удалить
                   </button>
@@ -825,7 +825,7 @@ const ClubManagementPage = () => {
               ))}
             </div>
           ) : (
-            <p className="text-gray-500">Нет дней-исключений в расписании для выбранного диапазона дат</p>
+            <p className="text-gray-500 text-sm sm:text-base">Нет дней-исключений в расписании для выбранного диапазона дат</p>
           )}
         </div>
       )}
