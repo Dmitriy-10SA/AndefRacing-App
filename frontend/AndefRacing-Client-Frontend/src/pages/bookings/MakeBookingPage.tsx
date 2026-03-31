@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { useQuery, useMutation } from '@tanstack/react-query'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
 import { searchApi } from '../../api/searchApi'
 import { bookingApi } from '../../api/bookingApi'
 import { ClientMakeBookingDto, FreeBookingSlotDto } from '../../types'
 import LoadingSpinner from '../../components/LoadingSpinner'
 import ErrorMessage from '../../components/ErrorMessage'
+import { usePageStateStore } from '../../stores/pageStateStore'
 
 // Получить текущую дату в формате YYYY-MM-DD
 const getCurrentDate = (): string => {
@@ -36,6 +37,8 @@ interface BookingFormData {
 const MakeBookingPage = () => {
   const { clubId } = useParams<{ clubId: string }>()
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
+  const { resetBookingsPageState } = usePageStateStore()
   const [selectedSlot, setSelectedSlot] = useState<FreeBookingSlotDto | null>(null)
   const [errorMessage, setErrorMessage] = useState('')
   const [shouldFetchSlots, setShouldFetchSlots] = useState(false)
@@ -96,6 +99,10 @@ const MakeBookingPage = () => {
     mutationFn: (data: ClientMakeBookingDto) =>
       bookingApi.makeBooking(Number(clubId), data),
     onSuccess: () => {
+      // Инвалидируем кэш бронирований, чтобы данные загрузились заново
+      queryClient.invalidateQueries({ queryKey: ['bookings'] })
+      // Сбрасываем фильтры страницы бронирований к дефолтным значениям (текущая дата + 7 дней)
+      resetBookingsPageState()
       navigate('/bookings')
     },
     onError: (error: any) => {
