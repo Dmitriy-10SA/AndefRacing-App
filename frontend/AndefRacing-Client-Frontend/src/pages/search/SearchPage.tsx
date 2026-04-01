@@ -16,9 +16,6 @@ const SearchPage = () => {
   const urlRegion = searchParams.get('region') ? Number(searchParams.get('region')) : null
   const urlCity = searchParams.get('city') ? Number(searchParams.get('city')) : null
 
-  // Приоритет: URL params > store state
-  const selectedRegion = urlRegion ?? searchPage.selectedRegion
-  const selectedCity = urlCity ?? searchPage.selectedCity
   const currentPage = searchPage.currentPage
   const pageSize = 9
 
@@ -32,7 +29,11 @@ const SearchPage = () => {
     }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Обновляем URL при изменении региона или города
+  // Используем store как единственный источник правды после инициализации
+  const selectedRegion = searchPage.selectedRegion
+  const selectedCity = searchPage.selectedCity
+
+  // Обновляем URL при изменении региона или города в store
   useEffect(() => {
     const params = new URLSearchParams()
     if (selectedRegion) params.set('region', selectedRegion.toString())

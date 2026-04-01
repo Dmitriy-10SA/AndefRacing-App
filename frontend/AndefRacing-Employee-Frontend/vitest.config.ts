@@ -11,12 +11,13 @@ export default defineConfig({
   },
   test: {
     globals: true,
-    environment: 'node',
+    environment: 'jsdom',
+    setupFiles: ['./src/__tests__/setup.ts'],
     include: ['src/__tests__/**/*.{test,spec}.{js,ts,tsx}'],
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
-      include: ['src/utils/**', 'src/stores/**'],
+      include: ['src/utils/**', 'src/stores/**', 'src/components/**', 'src/pages/**'],
       exclude: ['src/__tests__/**'],
     },
   },
