@@ -124,7 +124,8 @@ class ReportServiceTest {
                 at(2026, 1, 1, 10),
                 at(2026, 1, 1, 12),
                 (short) 1,
-                new BigDecimal("1000.00")
+                new BigDecimal("1000.00"),
+                "Note for booking 1"
         );
 
         Booking booking2 = new Booking(
@@ -133,7 +134,8 @@ class ReportServiceTest {
                 at(2026, 1, 1, 14),
                 at(2026, 1, 1, 16),
                 (short) 1,
-                new BigDecimal("1500.00")
+                new BigDecimal("1500.00"),
+                "Note for booking 2"
         );
 
         Booking booking3 = new Booking(
@@ -142,7 +144,8 @@ class ReportServiceTest {
                 at(2026, 1, 2, 10),
                 at(2026, 1, 2, 12),
                 (short) 1,
-                new BigDecimal("2000.00")
+                new BigDecimal("2000.00"),
+                "Note for booking 3"
         );
         booking3.cancel(); // Отменяем одно бронирование
 
@@ -152,7 +155,8 @@ class ReportServiceTest {
                 at(2026, 1, 3, 10),
                 at(2026, 1, 3, 12),
                 (short) 1,
-                new BigDecimal("2500.00")
+                new BigDecimal("2500.00"),
+                "Note for booking 4"
         );
 
         // Бронирование вне диапазона
@@ -162,7 +166,8 @@ class ReportServiceTest {
                 at(2025, 12, 31, 10),
                 at(2025, 12, 31, 12),
                 (short) 1,
-                new BigDecimal("3000.00")
+                new BigDecimal("3000.00"),
+                "Note for booking out of range"
         );
 
         bookingRepository.saveAll(List.of(booking1, booking2, booking3, booking4, bookingOutOfRange));
@@ -235,7 +240,8 @@ class ReportServiceTest {
                 at(2026, 1, 1, 10),
                 at(2026, 1, 1, 12),
                 (short) 1,
-                new BigDecimal("1000.00")
+                new BigDecimal("1000.00"),
+                "Note for booking 1"
         );
         paid1.confirmPay(employee);
 
@@ -245,7 +251,8 @@ class ReportServiceTest {
                 at(2026, 1, 1, 14),
                 at(2026, 1, 1, 16),
                 (short) 1,
-                new BigDecimal("1500.00")
+                new BigDecimal("1500.00"),
+                "Note for booking 2"
         );
         paid2.confirmPay(employee);
 
@@ -255,7 +262,8 @@ class ReportServiceTest {
                 at(2026, 1, 2, 10),
                 at(2026, 1, 2, 12),
                 (short) 1,
-                new BigDecimal("2000.00")
+                new BigDecimal("2000.00"),
+                "Note for booking 3"
         );
         paid3.confirmPay(employee);
 
@@ -265,7 +273,8 @@ class ReportServiceTest {
                 at(2026, 1, 3, 10),
                 at(2026, 1, 3, 12),
                 (short) 1,
-                new BigDecimal("2500.00")
+                new BigDecimal("2500.00"),
+                "Note for booking 4"
         );
         paid4.confirmPay(employee);
 
@@ -276,7 +285,8 @@ class ReportServiceTest {
                 at(2026, 1, 2, 14),
                 at(2026, 1, 2, 16),
                 (short) 1,
-                new BigDecimal("5000.00")
+                new BigDecimal("5000.00"),
+                "Note for booking pending"
         );
 
         bookingRepository.saveAll(List.of(paid1, paid2, paid3, paid4, pending));
@@ -345,7 +355,8 @@ class ReportServiceTest {
                 at(2026, 1, 1, 10),
                 at(2026, 1, 1, 12),
                 (short) 1,
-                new BigDecimal("1000.00")
+                new BigDecimal("1000.00"),
+                "Note for booking paid"
         );
         paid.confirmPay(employee);
 
@@ -355,7 +366,8 @@ class ReportServiceTest {
                 at(2026, 1, 1, 14),
                 at(2026, 1, 1, 16),
                 (short) 1,
-                new BigDecimal("5000.00")
+                new BigDecimal("5000.00"),
+                "Note for booking cancelled"
         );
         cancelled.cancel();
 

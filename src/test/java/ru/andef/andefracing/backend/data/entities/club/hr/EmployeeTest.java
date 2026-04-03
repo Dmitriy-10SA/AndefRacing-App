@@ -48,7 +48,8 @@ class EmployeeTest {
                 TEST_START_DATE_TIME,
                 TEST_END_DATE_TIME,
                 CNT_EQUIPMENT,
-                PRICE_VALUE
+                PRICE_VALUE,
+                "Note for booking"
         );
     }
 

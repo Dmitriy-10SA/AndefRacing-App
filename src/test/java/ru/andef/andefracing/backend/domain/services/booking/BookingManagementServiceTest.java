@@ -300,7 +300,7 @@ class BookingManagementServiceTest {
 
         LocalDateTime start = futureDateTime();
         LocalDateTime end = start.plusMinutes(60);
-        Booking booking = new Booking(club, client, start, end, (short) 1, new BigDecimal("1000.00"));
+        Booking booking = new Booking(club, client, start, end, (short) 1, new BigDecimal("1000.00"), "Note for booking");
         booking = bookingRepository.save(booking);
 
         // Act
@@ -310,6 +310,7 @@ class BookingManagementServiceTest {
         Booking updatedBooking = bookingRepository.findById(booking.getId()).orElseThrow();
         assertEquals(BookingStatus.PAID, updatedBooking.getStatus());
         assertEquals(employee.getId(), updatedBooking.getPayConfirmedByEmployee().getId());
+        assertEquals("Note for booking", updatedBooking.getNote());
     }
 
     @Test
@@ -337,7 +338,7 @@ class BookingManagementServiceTest {
 
         LocalDateTime start = futureDateTime();
         LocalDateTime end = start.plusMinutes(60);
-        Booking booking = new Booking(club, client, start, end, (short) 1, new BigDecimal("1000.00"));
+        Booking booking = new Booking(club, client, start, end, (short) 1, new BigDecimal("1000.00"), "Note for booking");
         booking = bookingRepository.save(booking);
 
         // Act
@@ -346,6 +347,7 @@ class BookingManagementServiceTest {
         // Assert
         Booking updatedBooking = bookingRepository.findById(booking.getId()).orElseThrow();
         assertEquals(BookingStatus.CANCELLED, updatedBooking.getStatus());
+        assertEquals("Note for booking", updatedBooking.getNote());
     }
 
     @Test

@@ -86,7 +86,8 @@ public class Booking {
             LocalDateTime startDateTime,
             LocalDateTime endDateTime,
             short cntEquipment,
-            BigDecimal priceValue
+            BigDecimal priceValue,
+            String note
     ) {
         this.club = club;
         this.client = client;
@@ -97,6 +98,7 @@ public class Booking {
         this.status = BookingStatus.PENDING_PAYMENT;
         this.isWalkIn = false;
         this.createdByEmployee = null;
+        this.note = note;
         this.payConfirmedByEmployee = null;
     }
 
@@ -109,7 +111,8 @@ public class Booking {
             LocalDateTime endDateTime,
             short cntEquipment,
             BigDecimal priceValue,
-            Employee employee
+            Employee employee,
+            String note
     ) {
         this.club = club;
         this.client = null;
@@ -121,6 +124,7 @@ public class Booking {
         this.isWalkIn = true;
         this.createdByEmployee = employee;
         this.payConfirmedByEmployee = null;
+        this.note = note;
     }
 
     /**

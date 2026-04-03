@@ -322,7 +322,8 @@ class ClubManagementServiceTest {
                 at(10),
                 at(12),
                 (short) 1,
-                new BigDecimal("1000.00")
+                new BigDecimal("1000.00"),
+                "Note for booking"
         );
         booking.confirmPay(employee);
         bookingRepository.save(booking);
@@ -530,7 +531,8 @@ class ClubManagementServiceTest {
                 at(10),
                 at(12),
                 (short) 1,
-                new BigDecimal("1000.00")
+                new BigDecimal("1000.00"),
+                "Note for booking"
         );
         bookingRepository.save(booking);
 
