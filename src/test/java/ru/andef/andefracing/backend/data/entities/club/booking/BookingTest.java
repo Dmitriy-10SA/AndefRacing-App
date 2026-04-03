@@ -31,7 +31,7 @@ class BookingTest {
      * Получение бронирования от клиента
      */
     private Booking getBookingByClient(Client client) {
-        return new Booking(CLUB, client, TEST_START_DATE_TIME, TEST_END_DATE_TIME, CNT_EQUIPMENT, PRICE_VALUE);
+        return new Booking(CLUB, client, TEST_START_DATE_TIME, TEST_END_DATE_TIME, CNT_EQUIPMENT, PRICE_VALUE, "Note for booking");
     }
 
     @Test
@@ -61,7 +61,8 @@ class BookingTest {
                 TEST_END_DATE_TIME,
                 CNT_EQUIPMENT,
                 PRICE_VALUE,
-                employee
+                employee,
+                "Note for booking"
         );
         assertEquals(0, booking.getId());
         assertEquals(CLUB, booking.getClub());

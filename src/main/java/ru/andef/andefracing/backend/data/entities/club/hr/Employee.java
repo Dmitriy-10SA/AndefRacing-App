@@ -80,9 +80,10 @@ public class Employee {
             LocalDateTime startDateTime,
             LocalDateTime endDateTime,
             short cntEquipment,
-            BigDecimal priceValue
+            BigDecimal priceValue,
+            String note
     ) {
-        Booking booking = new Booking(club, startDateTime, endDateTime, cntEquipment, priceValue, this);
+        Booking booking = new Booking(club, startDateTime, endDateTime, cntEquipment, priceValue, this, note);
         bookings.add(booking);
         booking.setCreatedByEmployee(this);
         return booking;
