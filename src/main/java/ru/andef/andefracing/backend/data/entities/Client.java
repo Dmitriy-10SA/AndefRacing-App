@@ -74,9 +74,10 @@ public class Client {
             LocalDateTime startDateTime,
             LocalDateTime endDateTime,
             short cntEquipment,
-            BigDecimal priceValue
+            BigDecimal priceValue,
+            String note
     ) {
-        Booking booking = new Booking(club, this, startDateTime, endDateTime, cntEquipment, priceValue);
+        Booking booking = new Booking(club, this, startDateTime, endDateTime, cntEquipment, priceValue, note);
         bookings.add(booking);
         booking.setClient(this);
         return booking;

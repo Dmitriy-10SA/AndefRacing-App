@@ -86,10 +86,11 @@ public class BookingManagementService {
         Club club = clubSearchService.findClubById(clubId);
         short cntEquipment = clientMakeBookingDto.getCntEquipment();
         BigDecimal expectedPrice = getPriceValue(club, start, end, cntEquipment);
+        String note = clientMakeBookingDto.getNote();
         makeBooking(
                 club,
                 start,
-                () -> client.makeBooking(club, start, end, cntEquipment, expectedPrice)
+                () -> client.makeBooking(club, start, end, cntEquipment, expectedPrice, note)
         );
     }
 
@@ -106,10 +107,11 @@ public class BookingManagementService {
         Club club = clubSearchService.findClubById(clubId);
         short cntEquipment = employeeMakeBookingDto.getCntEquipment();
         BigDecimal expectedPrice = getPriceValue(club, start, end, cntEquipment);
+        String note = employeeMakeBookingDto.getNote();
         makeBooking(
                 club,
                 start,
-                () -> employee.makeBooking(club, start, end, cntEquipment, expectedPrice)
+                () -> employee.makeBooking(club, start, end, cntEquipment, expectedPrice, note)
         );
     }
 

@@ -156,7 +156,7 @@ class BookingSearchServiceTest {
         LocalDateTime bookingEnd = at(15, 11);
 
         // Create existing booking
-        Booking booking = new Booking(club, client, bookingStart, bookingEnd, (short) 10, new BigDecimal("10000.00"));
+        Booking booking = new Booking(club, client, bookingStart, bookingEnd, (short) 10, new BigDecimal("10000.00"), "Note for booking");
         bookingRepository.save(booking);
 
         FreeBookingSlotsRequestDto request = new FreeBookingSlotsRequestDto((short) 60, (short) 1, date);
@@ -302,21 +302,24 @@ class BookingSearchServiceTest {
                 at(15, 10),
                 at(15, 11),
                 (short) 1,
-                new BigDecimal("1000.00")
+                new BigDecimal("1000.00"),
+                "Note for booking 1"
         );
         Booking booking2 = new Booking(
                 club, client,
                 at(16, 14),
                 at(16, 15),
                 (short) 2,
-                new BigDecimal("2000.00")
+                new BigDecimal("2000.00"),
+                "Note for booking 2"
         );
         Booking booking3 = new Booking(
                 club, client,
                 at(20, 10),
                 at(20, 11),
                 (short) 1,
-                new BigDecimal("1000.00")
+                new BigDecimal("1000.00"),
+                "Note for booking 3"
         );
         bookingRepository.saveAll(List.of(booking1, booking2, booking3));
 
@@ -376,7 +379,8 @@ class BookingSearchServiceTest {
                 at(15, 10),
                 at(15, 11),
                 (short) 1,
-                new BigDecimal("1000.00")
+                new BigDecimal("1000.00"),
+                "Note for booking"
         );
         booking = bookingRepository.save(booking);
 
@@ -421,14 +425,16 @@ class BookingSearchServiceTest {
                 at(15, 10),
                 at(15, 11),
                 (short) 1,
-                new BigDecimal("1000.00")
+                new BigDecimal("1000.00"),
+                "Note for booking 1"
         );
         Booking booking2 = new Booking(
                 club, client2,
                 at(16, 14),
                 at(16, 15),
                 (short) 2,
-                new BigDecimal("2000.00")
+                new BigDecimal("2000.00"),
+                "Note for booking 2"
         );
         bookingRepository.saveAll(List.of(booking1, booking2));
 
@@ -460,14 +466,16 @@ class BookingSearchServiceTest {
                 at(15, 10),
                 at(15, 11),
                 (short) 1,
-                new BigDecimal("1000.00")
+                new BigDecimal("1000.00"),
+                "Note for booking 1"
         );
         Booking booking2 = new Booking(
                 club, client2,
                 at(16, 14),
                 at(16, 15),
                 (short) 2,
-                new BigDecimal("2000.00")
+                new BigDecimal("2000.00"),
+                "Note for booking 2"
         );
         bookingRepository.saveAll(List.of(booking1, booking2));
 
@@ -519,7 +527,8 @@ class BookingSearchServiceTest {
                 at(15, 10),
                 at(15, 11),
                 (short) 1,
-                new BigDecimal("1000.00")
+                new BigDecimal("1000.00"),
+                "Note for booking"
         );
         booking = bookingRepository.save(booking);
 
@@ -574,21 +583,24 @@ class BookingSearchServiceTest {
                 at(17, 10),
                 at(17, 11),
                 (short) 1,
-                new BigDecimal("1000.00")
+                new BigDecimal("1000.00"),
+                "Note for booking 1"
         );
         Booking booking2 = new Booking(
                 club, client,
                 at(15, 14),
                 at(15, 15),
                 (short) 2,
-                new BigDecimal("2000.00")
+                new BigDecimal("2000.00"),
+                "Note for booking 2"
         );
         Booking booking3 = new Booking(
                 club, client,
                 at(16, 10),
                 at(16, 11),
                 (short) 1,
-                new BigDecimal("1500.00")
+                new BigDecimal("1500.00"),
+                "Note for booking 3"
         );
         bookingRepository.saveAll(List.of(booking1, booking2, booking3));
 
@@ -628,21 +640,24 @@ class BookingSearchServiceTest {
                 at(15, 10),
                 at(15, 11),
                 (short) 1,
-                new BigDecimal("1000.00")
+                new BigDecimal("1000.00"),
+                "Note for booking 1"
         );
         Booking booking2 = new Booking(
                 club, client,
                 at(16, 14),
                 at(16, 15),
                 (short) 2,
-                new BigDecimal("2000.00")
+                new BigDecimal("2000.00"),
+                "Note for booking 2"
         );
         Booking booking3 = new Booking(
                 club, client,
                 at(17, 10),
                 at(17, 11),
                 (short) 1,
-                new BigDecimal("1500.00")
+                new BigDecimal("1500.00"),
+                "Note for booking 3"
         );
         bookingRepository.saveAll(List.of(booking1, booking2, booking3));
 
@@ -713,21 +728,24 @@ class BookingSearchServiceTest {
                 at(17, 10),
                 at(17, 11),
                 (short) 1,
-                new BigDecimal("1000.00")
+                new BigDecimal("1000.00"),
+                "Note for booking 1"
         );
         Booking booking2 = new Booking(
                 club, client2,
                 at(15, 14),
                 at(15, 15),
                 (short) 2,
-                new BigDecimal("2000.00")
+                new BigDecimal("2000.00"),
+                "Note for booking 2"
         );
         Booking booking3 = new Booking(
                 club, client1,
                 at(16, 10),
                 at(16, 11),
                 (short) 1,
-                new BigDecimal("1500.00")
+                new BigDecimal("1500.00"),
+                "Note for booking 3"
         );
         bookingRepository.saveAll(List.of(booking1, booking2, booking3));
 
@@ -769,21 +787,24 @@ class BookingSearchServiceTest {
                 at(15, 10),
                 at(15, 11),
                 (short) 1,
-                new BigDecimal("1000.00")
+                new BigDecimal("1000.00"),
+                "Note for booking 1"
         );
         Booking booking2 = new Booking(
                 club, client2,
                 at(16, 14),
                 at(16, 15),
                 (short) 2,
-                new BigDecimal("2000.00")
+                new BigDecimal("2000.00"),
+                "Note for booking 2"
         );
         Booking booking3 = new Booking(
                 club, client1,
                 at(17, 10),
                 at(17, 11),
                 (short) 1,
-                new BigDecimal("1500.00")
+                new BigDecimal("1500.00"),
+                "Note for booking 3"
         );
         bookingRepository.saveAll(List.of(booking1, booking2, booking3));
 
