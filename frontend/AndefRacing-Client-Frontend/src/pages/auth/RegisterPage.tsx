@@ -11,6 +11,7 @@ import PasswordInput from '../../components/PasswordInput'
 
 interface RegisterFormData extends ClientRegisterDto {
   confirmPassword: string
+  personalDataConsent: boolean
 }
 
 const RegisterPage = () => {
@@ -43,7 +44,7 @@ const RegisterPage = () => {
   const onSubmit = (data: RegisterFormData) => {
     setErrorMessage('')
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { confirmPassword, ...registerData } = data
+    const { confirmPassword, personalDataConsent, ...registerData } = data
     registerMutation.mutate(registerData)
   }
 
@@ -142,6 +143,31 @@ const RegisterPage = () => {
                 <p className="error-text">{errors.confirmPassword.message}</p>
               )}
             </div>
+
+            <div className="flex items-start">
+              <input
+                type="checkbox"
+                id="personalDataConsent"
+                className="mt-1 h-4 w-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500"
+                {...register('personalDataConsent', {
+                  required: 'Необходимо согласие на обработку персональных данных',
+                })}
+              />
+              <label htmlFor="personalDataConsent" className="ml-2 text-sm text-gray-600">
+                Я даю согласие на обработку моих персональных данных в соответствии с{' '}
+                <a
+                  href="https://www.consultant.ru/document/cons_doc_LAW_61801/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary-600 hover:text-primary-700 underline"
+                >
+                  Федеральным законом №152-ФЗ «О персональных данных»
+                </a>
+              </label>
+            </div>
+            {errors.personalDataConsent && (
+              <p className="error-text">{errors.personalDataConsent.message}</p>
+            )}
 
             <button
               type="submit"

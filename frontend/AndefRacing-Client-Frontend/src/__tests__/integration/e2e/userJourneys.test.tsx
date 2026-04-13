@@ -258,6 +258,9 @@ describe('E2E: Полный процесс регистрации и входа'
     await user.type(passwordInputs[0], 'NewPassword123!')
     await user.type(passwordInputs[1], 'NewPassword123!')
 
+    // Соглашаемся на обработку персональных данных
+    await user.click(screen.getByRole('checkbox'))
+
     const submitButton = screen.getByRole('button', { name: /зарегистрироваться/i })
     await user.click(submitButton)
 
@@ -280,6 +283,9 @@ describe('E2E: Полный процесс регистрации и входа'
     const passwordInputs = document.querySelectorAll('input[type="password"]')
     await user.type(passwordInputs[0], 'Password123!')
     await user.type(passwordInputs[1], 'Password123!')
+
+    // Соглашаемся на обработку персональных данных
+    await user.click(screen.getByRole('checkbox'))
 
     const submitButton = screen.getByRole('button', { name: /зарегистрироваться/i })
     await user.click(submitButton)
@@ -504,6 +510,9 @@ describe('E2E: Взаимодействие с формами', () => {
     const passwordInputs = document.querySelectorAll('input[type="password"]')
     await user.type(passwordInputs[0], 'Password123!')
     await user.type(passwordInputs[1], 'DifferentPassword123!')
+
+    // Соглашаемся на обработку персональных данных
+    await user.click(screen.getByRole('checkbox'))
 
     const submitButton = screen.getByRole('button', { name: /зарегистрироваться/i })
     await user.click(submitButton)
