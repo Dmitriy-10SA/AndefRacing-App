@@ -45,6 +45,7 @@ describe('RegisterPage Integration', () => {
       expect(screen.getByText('Номер телефона обязателен')).toBeInTheDocument()
       expect(screen.getByText('Пароль обязателен')).toBeInTheDocument()
       expect(screen.getByText('Подтверждение пароля обязательно')).toBeInTheDocument()
+      expect(screen.getByText('Необходимо согласие на обработку персональных данных')).toBeInTheDocument()
     })
   })
 
@@ -102,6 +103,8 @@ describe('RegisterPage Integration', () => {
     expect(screen.getByPlaceholderText('+7-XXX-XXX-XX-XX')).toBeInTheDocument()
     expect(document.querySelector('input[name="password"]')).toBeInTheDocument()
     expect(document.querySelector('input[name="confirmPassword"]')).toBeInTheDocument()
+    expect(screen.getByRole('checkbox')).toBeInTheDocument()
+    expect(screen.getByText(/Федеральным законом №152-ФЗ/i)).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /Зарегистрироваться/i })).toBeInTheDocument()
   })
 
@@ -162,6 +165,8 @@ describe('RegisterPage Integration', () => {
     await user.type(passwordInputs[0], 'Password123!')
     await user.type(passwordInputs[1], 'Password123!')
 
+    await user.click(screen.getByRole('checkbox'))
+
     await user.click(screen.getByRole('button', { name: /Зарегистрироваться/i }))
 
     await waitFor(() => {
@@ -194,6 +199,8 @@ describe('RegisterPage Integration', () => {
       await user.type(passwordInputs[0], 'Password123!')
       await user.type(passwordInputs[1], 'Password123!')
 
+      await user.click(screen.getByRole('checkbox'))
+
       await user.click(screen.getByRole('button', { name: /Зарегистрироваться/i }))
 
       await waitFor(() => {
@@ -225,6 +232,8 @@ describe('RegisterPage Integration', () => {
       await user.type(passwordInputs[0], 'Password123!')
       await user.type(passwordInputs[1], 'Password123!')
 
+      await user.click(screen.getByRole('checkbox'))
+
       await user.click(screen.getByRole('button', { name: /Зарегистрироваться/i }))
 
       await waitFor(() => {
@@ -233,6 +242,29 @@ describe('RegisterPage Integration', () => {
 
       // Пользователь не должен быть авторизован
       expect(useAuthStore.getState().isAuthenticated).toBe(false)
+    })
+  })
+
+  it('показывает ошибку если не дано согласие на обработку персональных данных', async () => {
+    const user = userEvent.setup()
+
+    render(<RegisterPage />)
+
+    const nameInput = document.querySelector('input[type="text"]')!
+    await user.type(nameInput, 'Тест')
+
+    const phoneInput = screen.getByPlaceholderText('+7-XXX-XXX-XX-XX')
+    await user.type(phoneInput, '9991112233')
+
+    const passwordInputs = document.querySelectorAll('input[type="password"]')
+    await user.type(passwordInputs[0], 'Password123!')
+    await user.type(passwordInputs[1], 'Password123!')
+
+    // Не ставим галочку
+    await user.click(screen.getByRole('button', { name: /Зарегистрироваться/i }))
+
+    await waitFor(() => {
+      expect(screen.getByText('Необходимо согласие на обработку персональных данных')).toBeInTheDocument()
     })
   })
 })
