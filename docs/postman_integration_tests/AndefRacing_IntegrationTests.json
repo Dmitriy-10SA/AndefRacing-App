@@ -1,0 +1,1296 @@
+{
+	"info": {
+		"_postman_id": "e4b0593c-df7c-415b-bdce-e5127ba50d11",
+		"name": "AndefRacing — Integration Tests",
+		"description": "Интеграционные тесты API AndefRacing.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "42390214",
+		"_collection_link": "https://andef0.postman.co/workspace/e5ae9401-5b6c-4046-9198-14366ad2edf9/collection/42390214-e4b0593c-df7c-415b-bdce-e5127ba50d11?action=share&source=collection_link&creator=42390214"
+	},
+	"item": [
+		{
+			"name": "01. Auth Client",
+			"item": [
+				{
+					"name": "01. Регистрация клиента",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"const suffix = Math.floor(1000000 + Math.random() * 8999999).toString();",
+									"const phone = '+7-9' + suffix.slice(0,2) + '-' + suffix.slice(2,5) + '-' + suffix.slice(5,7) + '-' + suffix.slice(0,2);",
+									"pm.environment.set('clientPhone', phone);",
+									"pm.environment.set('clientName', 'Postman Test Client ' + suffix);",
+									"pm.environment.set('clientPassword', 'Password123!');"
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('Статус ответа 2xx', function () {",
+									"    pm.expect(pm.response.code).to.be.within(200, 299);",
+									"});",
+									"",
+									"pm.test('Ответ содержит JWT клиента', function () {",
+									"    const json = pm.response.json();",
+									"    pm.expect(json.jwt).to.be.a('string').and.not.empty;",
+									"    pm.environment.set('clientToken', json.jwt);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-Version",
+								"value": "1.0.0"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"{{clientName}}\",\n  \"phone\": \"{{clientPhone}}\",\n  \"password\": \"{{clientPassword}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/client/register",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"client",
+								"register"
+							]
+						},
+						"description": "Создает нового клиента с динамически сгенерированным телефоном и сохраняет JWT в clientToken."
+					},
+					"response": []
+				},
+				{
+					"name": "02. Авторизация клиента",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('Статус ответа 2xx', function () {",
+									"    pm.expect(pm.response.code).to.be.within(200, 299);",
+									"});",
+									"",
+									"pm.test('Ответ содержит JWT клиента', function () {",
+									"    const json = pm.response.json();",
+									"    pm.expect(json.jwt).to.be.a('string').and.not.empty;",
+									"    pm.environment.set('clientToken', json.jwt);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-Version",
+								"value": "1.0.0"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"phone\": \"{{clientPhone}}\",\n  \"password\": \"{{clientPassword}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/client/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"client",
+								"login"
+							]
+						},
+						"description": "Проверяет вход клиента и сохранение JWT."
+					},
+					"response": []
+				},
+				{
+					"name": "03. Авторизация клиента с неверным паролем",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('Запрос отклонен ожидаемым статусом', function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([400, 401, 403, 404, 409]);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-Version",
+								"value": "1.0.0"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"phone\": \"{{clientPhone}}\",\n  \"password\": \"WrongPassword123!\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/client/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"client",
+								"login"
+							]
+						},
+						"description": "Негативный сценарий: неверные учетные данные должны быть отклонены."
+					},
+					"response": []
+				},
+				{
+					"name": "04. Получение профиля клиента с токеном",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('Статус ответа 2xx', function () {",
+									"    pm.expect(pm.response.code).to.be.within(200, 299);",
+									"});",
+									"",
+									"pm.test('Ответ является JSON или пустым телом', function () {",
+									"    if (pm.response.text()) {",
+									"        pm.expect(function () { pm.response.json(); }).not.to.throw();",
+									"    }",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{clientToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-Version",
+								"value": "1.0.0"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/profile/client/personal-info",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"profile",
+								"client",
+								"personal-info"
+							]
+						},
+						"description": "Проверяет доступ к защищенному ресурсу клиента."
+					},
+					"response": []
+				},
+				{
+					"name": "05. Получение профиля клиента без токена",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('Запрос отклонен ожидаемым статусом', function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([400, 401, 403, 404, 409]);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-Version",
+								"value": "1.0.0"
+							},
+							{
+								"key": "Authorization",
+								"value": ""
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/profile/client/personal-info",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"profile",
+								"client",
+								"personal-info"
+							]
+						},
+						"description": "Негативный сценарий: защищенный endpoint без JWT должен быть отклонен."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "02. Public Search",
+			"item": [
+				{
+					"name": "06. Получение регионов с открытыми клубами",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('Статус ответа 2xx', function () {",
+									"    pm.expect(pm.response.code).to.be.within(200, 299);",
+									"});",
+									"",
+									"pm.test('Ответ является JSON или пустым телом', function () {",
+									"    if (pm.response.text()) {",
+									"        pm.expect(function () { pm.response.json(); }).not.to.throw();",
+									"    }",
+									"});",
+									"",
+									"if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+									"    const data = pm.response.json();",
+									"    if (Array.isArray(data) && data.length > 0) {",
+									"        const id = data[0].id ?? data[0].regionId;",
+									"        if (id !== undefined) pm.environment.set('regionId', id);",
+									"    }",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-Version",
+								"value": "1.0.0"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/search/regions",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"search",
+								"regions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "07. Получение городов региона",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('Статус ответа 2xx', function () {",
+									"    pm.expect(pm.response.code).to.be.within(200, 299);",
+									"});",
+									"",
+									"pm.test('Ответ является JSON или пустым телом', function () {",
+									"    if (pm.response.text()) {",
+									"        pm.expect(function () { pm.response.json(); }).not.to.throw();",
+									"    }",
+									"});",
+									"",
+									"if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+									"    const data = pm.response.json();",
+									"    if (Array.isArray(data) && data.length > 0) {",
+									"        const id = data[0].id ?? data[0].cityId;",
+									"        if (id !== undefined) pm.environment.set('cityId', id);",
+									"    }",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-Version",
+								"value": "1.0.0"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/search/cities/{{regionId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"search",
+								"cities",
+								"{{regionId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "08. Получение клубов города",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('Статус ответа 2xx', function () {",
+									"    pm.expect(pm.response.code).to.be.within(200, 299);",
+									"});",
+									"",
+									"pm.test('Ответ является JSON или пустым телом', function () {",
+									"    if (pm.response.text()) {",
+									"        pm.expect(function () { pm.response.json(); }).not.to.throw();",
+									"    }",
+									"});",
+									"",
+									"if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+									"    const data = pm.response.json();",
+									"    const list = data.content || data.clubs || data.items || data.data || data.clubShortDtoList || data.list || [];",
+									"    if (Array.isArray(list) && list.length > 0) {",
+									"        const id = list[0].id ?? list[0].clubId;",
+									"        if (id !== undefined) pm.environment.set('clubId', id);",
+									"    }",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-Version",
+								"value": "1.0.0"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/search/clubs/{{cityId}}?pageNumber=0&pageSize={{pageSize}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"search",
+								"clubs",
+								"{{cityId}}"
+							],
+							"query": [
+								{
+									"key": "pageNumber",
+									"value": "0"
+								},
+								{
+									"key": "pageSize",
+									"value": "{{pageSize}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "09. Получение полной информации о клубе",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('Статус ответа 2xx', function () {",
+									"    pm.expect(pm.response.code).to.be.within(200, 299);",
+									"});",
+									"",
+									"pm.test('Ответ является JSON или пустым телом', function () {",
+									"    if (pm.response.text()) {",
+									"        pm.expect(function () { pm.response.json(); }).not.to.throw();",
+									"    }",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-Version",
+								"value": "1.0.0"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/search/clubs/{{clubId}}/full-info",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"search",
+								"clubs",
+								"{{clubId}}",
+								"full-info"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "03. Client Favorite Clubs",
+			"item": [
+				{
+					"name": "10. Добавление клуба в избранное",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('Статус ответа 2xx', function () {",
+									"    pm.expect(pm.response.code).to.be.within(200, 299);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{clientToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-Version",
+								"value": "1.0.0"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/profile/client/favorite-clubs/{{clubId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"profile",
+								"client",
+								"favorite-clubs",
+								"{{clubId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "11. Проверка клуба в избранном",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('Статус ответа 2xx', function () {",
+									"    pm.expect(pm.response.code).to.be.within(200, 299);",
+									"});",
+									"",
+									"pm.test('Ответ является JSON или пустым телом', function () {",
+									"    if (pm.response.text()) {",
+									"        pm.expect(function () { pm.response.json(); }).not.to.throw();",
+									"    }",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{clientToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-Version",
+								"value": "1.0.0"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/profile/client/favorite-clubs/{{clubId}}/check",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"profile",
+								"client",
+								"favorite-clubs",
+								"{{clubId}}",
+								"check"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "12. Получение списка избранных клубов",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('Статус ответа 2xx', function () {",
+									"    pm.expect(pm.response.code).to.be.within(200, 299);",
+									"});",
+									"",
+									"pm.test('Ответ является JSON или пустым телом', function () {",
+									"    if (pm.response.text()) {",
+									"        pm.expect(function () { pm.response.json(); }).not.to.throw();",
+									"    }",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{clientToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-Version",
+								"value": "1.0.0"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/profile/client/favorite-clubs?pageNumber=0&pageSize={{pageSize}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"profile",
+								"client",
+								"favorite-clubs"
+							],
+							"query": [
+								{
+									"key": "pageNumber",
+									"value": "0"
+								},
+								{
+									"key": "pageSize",
+									"value": "{{pageSize}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "04. Client Booking",
+			"item": [
+				{
+					"name": "13. Получение свободных слотов клуба",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Статус ответа 2xx', function () {",
+									"    pm.expect(pm.response.code).to.be.within(200, 299);",
+									"});",
+									"",
+									"pm.test('Ответ является JSON или пустым телом', function () {",
+									"    if (pm.response.text()) {",
+									"        pm.expect(function () { pm.response.json(); }).not.to.throw();",
+									"    }",
+									"});",
+									"",
+									"if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+									"    const data = pm.response.json();",
+									"    if (Array.isArray(data) && data.length > 0) {",
+									"        const slot = data[0];",
+									"        if (slot.startDateTime) pm.environment.set('slotStartDateTime', slot.startDateTime);",
+									"        if (slot.endDateTime) pm.environment.set('slotEndDateTime', slot.endDateTime);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{clientToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-Version",
+								"value": "1.0.0"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/bookings/client/free-slots/{{clubId}}?durationMinutes={{durationMinutes}}&cntEquipment={{equipmentCount}}&date={{testDate}}&userCurrentDate={{userCurrentDate}}&userCurrentTime={{userCurrentTime}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"bookings",
+								"client",
+								"free-slots",
+								"{{clubId}}"
+							],
+							"query": [
+								{
+									"key": "durationMinutes",
+									"value": "{{durationMinutes}}"
+								},
+								{
+									"key": "cntEquipment",
+									"value": "{{equipmentCount}}"
+								},
+								{
+									"key": "date",
+									"value": "{{testDate}}"
+								},
+								{
+									"key": "userCurrentDate",
+									"value": "{{userCurrentDate}}"
+								},
+								{
+									"key": "userCurrentTime",
+									"value": "{{userCurrentTime}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "14. Создание бронирования клиентом",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('Статус ответа 2xx', function () {",
+									"    pm.expect(pm.response.code).to.be.within(200, 299);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{clientToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-Version",
+								"value": "1.0.0"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"cntEquipment\": \"{{equipmentCount}}\",\n  \"slot\": {\n    \"startDateTime\": \"{{slotStartDateTime}}\",\n    \"endDateTime\": \"{{slotEndDateTime}}\"\n  },\n  \"note\": \"Интеграционный тест Postman\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/bookings/client/make-booking/{{clubId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"bookings",
+								"client",
+								"make-booking",
+								"{{clubId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "15. Получение списка бронирований клиента",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('Статус ответа 2xx', function () {",
+									"    pm.expect(pm.response.code).to.be.within(200, 299);",
+									"});",
+									"",
+									"pm.test('Ответ является JSON или пустым телом', function () {",
+									"    if (pm.response.text()) {",
+									"        pm.expect(function () { pm.response.json(); }).not.to.throw();",
+									"    }",
+									"});",
+									"",
+									"if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+									"    const data = pm.response.json();",
+									"    const list = data.content || data.bookings || data.items || data.data || data.clientBookings || data.list || [];",
+									"    if (Array.isArray(list) && list.length > 0) {",
+									"        const id = list[0].id ?? list[0].bookingId;",
+									"        if (id !== undefined) pm.environment.set('bookingId', id);",
+									"    }",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{clientToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-Version",
+								"value": "1.0.0"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/bookings/client?startDate={{startDate}}&endDate={{endDate}}&pageNumber=0&pageSize={{pageSize}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"bookings",
+								"client"
+							],
+							"query": [
+								{
+									"key": "startDate",
+									"value": "{{startDate}}"
+								},
+								{
+									"key": "endDate",
+									"value": "{{endDate}}"
+								},
+								{
+									"key": "pageNumber",
+									"value": "0"
+								},
+								{
+									"key": "pageSize",
+									"value": "{{pageSize}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "16. Получение полной информации о бронировании",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('Статус ответа 2xx', function () {",
+									"    pm.expect(pm.response.code).to.be.within(200, 299);",
+									"});",
+									"",
+									"pm.test('Ответ является JSON или пустым телом', function () {",
+									"    if (pm.response.text()) {",
+									"        pm.expect(function () { pm.response.json(); }).not.to.throw();",
+									"    }",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{clientToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-Version",
+								"value": "1.0.0"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/bookings/client/{{clubId}}/{{bookingId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"bookings",
+								"client",
+								"{{clubId}}",
+								"{{bookingId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "05. Employee Auth and Reports",
+			"item": [
+				{
+					"name": "17. Предварительная авторизация сотрудника",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('Статус ответа 2xx', function () {",
+									"    pm.expect(pm.response.code).to.be.within(200, 299);",
+									"});",
+									"",
+									"pm.test('Ответ является JSON или пустым телом', function () {",
+									"    if (pm.response.text()) {",
+									"        pm.expect(function () { pm.response.json(); }).not.to.throw();",
+									"    }",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-Version",
+								"value": "1.0.0"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"phone\": \"{{employeePhone}}\",\n  \"password\": \"{{employeePassword}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/employee/pre-login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"employee",
+								"pre-login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "18. Авторизация сотрудника в клубе",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('Статус ответа 2xx', function () {",
+									"    pm.expect(pm.response.code).to.be.within(200, 299);",
+									"});",
+									"",
+									"pm.test('Ответ содержит JWT сотрудника', function () {",
+									"    const json = pm.response.json();",
+									"    pm.expect(json.jwt).to.be.a('string').and.not.empty;",
+									"    pm.environment.set('employeeToken', json.jwt);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-Version",
+								"value": "1.0.0"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"phone\": \"{{employeePhone}}\",\n  \"password\": \"{{employeePassword}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/employee/login/{{clubId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"employee",
+								"login",
+								"{{clubId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "19. Отчет: статистика бронирований",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('Статус ответа 2xx', function () {",
+									"    pm.expect(pm.response.code).to.be.within(200, 299);",
+									"});",
+									"",
+									"pm.test('Ответ является JSON или пустым телом', function () {",
+									"    if (pm.response.text()) {",
+									"        pm.expect(function () { pm.response.json(); }).not.to.throw();",
+									"    }",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{employeeToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-Version",
+								"value": "1.0.0"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/reports/booking-statistics?startDate={{startDate}}&endDate={{endDate}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"reports",
+								"booking-statistics"
+							],
+							"query": [
+								{
+									"key": "startDate",
+									"value": "{{startDate}}"
+								},
+								{
+									"key": "endDate",
+									"value": "{{endDate}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "20. Отчет: финансовая статистика",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('Статус ответа 2xx', function () {",
+									"    pm.expect(pm.response.code).to.be.within(200, 299);",
+									"});",
+									"",
+									"pm.test('Ответ является JSON или пустым телом', function () {",
+									"    if (pm.response.text()) {",
+									"        pm.expect(function () { pm.response.json(); }).not.to.throw();",
+									"    }",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{employeeToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-Version",
+								"value": "1.0.0"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/reports/financial-statistics?startDate={{startDate}}&endDate={{endDate}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"reports",
+								"financial-statistics"
+							],
+							"query": [
+								{
+									"key": "startDate",
+									"value": "{{startDate}}"
+								},
+								{
+									"key": "endDate",
+									"value": "{{endDate}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Общий pre-request hook. Переменные окружения задаются в AndefRacing Local Environment."
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Общий test hook."
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080/api/v1"
+		},
+		{
+			"key": "pageSize",
+			"value": "10"
+		},
+		{
+			"key": "durationMinutes",
+			"value": "60"
+		},
+		{
+			"key": "equipmentCount",
+			"value": "1"
+		}
+	]
+}
