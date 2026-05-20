@@ -1,0 +1,1 @@
+## Файлы с интеграционными тестами [AndefRacing_IntegrationTests.json](AndefRacing_IntegrationTests.json) [AndefRacing_LocalEnvironment.json](AndefRacing_LocalEnvironment.json) для импорта в Postman
