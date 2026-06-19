@@ -1,28 +1,28 @@
-# Сборка
 FROM maven:3.9-eclipse-temurin-17 AS build
+
 WORKDIR /app
 
-# Копируем pom.xml и загружаем зависимости
 COPY pom.xml .
 RUN mvn dependency:go-offline -B
 
-# Копируем исходный код и собираем приложение
 COPY src ./src
 RUN mvn clean package -DskipTests
 
-# Создаем финальный образ
+
 FROM eclipse-temurin:17-jre-alpine
+
 WORKDIR /app
 
-# Создаем пользователя для запуска приложения
-RUN addgroup -S spring && adduser -S spring -G spring
-USER spring:spring
+RUN addgroup -S spring \
+    && adduser -S spring -G spring
 
-# Копируем собранный jar из этапа сборки
 COPY --from=build /app/target/*.jar app.jar
 
-# Открываем порт приложения
-EXPOSE 8080
+RUN mkdir -p /uploads \
+    && chown -R spring:spring /app /uploads
 
-# Запускаем приложение
-ENTRYPOINT ["java", "-jar", "app.jar"]
+USER spring:spring
+
+EXPOSE 10000
+
+ENTRYPOINT ["java", "-XX:MaxRAMPercentage=75.0", "-jar", "app.jar"]

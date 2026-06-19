@@ -1,0 +1,15 @@
+target
+.git
+.github
+.idea
+.vscode
+*.iml
+
+.env
+.env.*
+!.env.example
+
+uploads
+frontend
+docker-compose.yml
+README.md
